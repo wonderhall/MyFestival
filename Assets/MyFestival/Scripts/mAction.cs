@@ -6,10 +6,8 @@ using System;
 
 public class mAction : MonoBehaviour
 {
-    public GameObject[] gameObjects;
     public static mAction Instance;
     private bool isPortrait;
-    public bool toggleAnimBool = false;
     private void Awake()
     {
         Instance = this;
@@ -56,14 +54,5 @@ public class mAction : MonoBehaviour
 
     //------버튼 액션---
  
-    public void SwitchPage(GameObject[] mList,int index )
-    {
-        for (int i = 0; i < mList.Length; i++)
-        {
-            if (i == index)
-                mList[i].SetActive(true);
-            else
-            mList[i].SetActive(false);
-        }
-    }
+
 }

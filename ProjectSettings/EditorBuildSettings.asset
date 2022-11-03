@@ -6,11 +6,14 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/MyFestival/Main.unity
-    guid: 4e8b0d90b3bcd364c9c9537a497cf820
+    path: Assets/MyFestival/Login.unity
+    guid: 4882ddee9027099409e0c24677c6f06e
   - enabled: 1
-    path: Assets/MyFestival/CreateTemplete.unity
-    guid: 45a7d66f60397d8409b37ee6a25a75ae
+    path: Assets/MyFestival/Main.unity
+    guid: dd74b8e106084124a99e6e1d263633f3
+  - enabled: 1
+    path: Assets/MyFestival/CreateNewTemp.unity
+    guid: 3e76704070a167d4e887689da2f9e69d
   m_configObjects:
     AR Foundation RemoteARFoundationRemoteLoaderSettings: {fileID: 11400000, guid: cbad855c47f3bee4e90ce709b6ba4c7a,
       type: 2}

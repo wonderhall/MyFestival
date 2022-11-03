@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25102b48324d03d40b2e122bb1271ea2, type: 3}
+  m_Name: item
+  m_EditorClassIdentifier: 
+  items:
+  - iName: Cube
+    preview: {fileID: 21300000, guid: 67659635195c79444b9085acf365735e, type: 3}
+    prefab: {fileID: 4340822345519530754, guid: a03b00c9dd2afa84eb8f713d999e543d,
+      type: 3}
+  - iName: Capsule
+    preview: {fileID: 21300000, guid: 4ba3b76d312162d4ca33fa8a784f5949, type: 3}
+    prefab: {fileID: 3296341481916885095, guid: 53b3657b148ac0741be66f414b553ad2,
+      type: 3}
+  - iName: Sphere
+    preview: {fileID: 21300000, guid: 1b1591d064acd444eb40619a731c87f6, type: 3}
+    prefab: {fileID: 8300701538404970602, guid: e8743c432a1a9ef4e9d197d783f30e7b,
+      type: 3}
