@@ -11,8 +11,11 @@ public class Manager : MonoBehaviour
     [Header("유저아이디")]
     public string userID;
 
+    [Header("현재 선택한 스크립트오브젝트")]
+    public ScriptableObject_CategoryItems scriptableObject;
+    [Header("현재 선택한 오브젝트 이름")]
+    public int SeletedObjectIndex;
 
-    
     private void Awake()
     {
         if (instance == null)
