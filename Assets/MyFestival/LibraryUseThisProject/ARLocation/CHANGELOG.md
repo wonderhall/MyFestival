@@ -1,3 +1,12 @@
+# 3.9.3
+- Improvement: Usually objects are hidden until they are positioned. But
+  previously this only worked with meshes, which use the `MeshRenderer`, so
+  that sprites, which use the `SpriteRenderer` were not hidden. This fixes this
+  situation.
+
+# 3.9.2 
+- Fixed bug where "Create Basic Scene Structure" does not create an "AR Camera".
+
 # 3.9.1
 
 - Fixed orientation update bug when "Use Raw Until First Average" is enabled.
