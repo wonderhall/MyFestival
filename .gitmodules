@@ -1,0 +1,3 @@
+[submodule "Assets/Duck/Http"]
+	path = Assets/Duck/Http
+	url = https://github.com/dubit/unity-http.git
