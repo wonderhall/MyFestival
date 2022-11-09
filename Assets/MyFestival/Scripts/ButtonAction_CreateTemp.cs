@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,12 +34,16 @@ public class ButtonAction_CreateTemp : MonoBehaviour
     [Header("알람창")]
     public GameObject[] AlarmWindow;
 
+    [Header("json리스트")]
+    public Object[] JsonList; 
+
 
     // Start is called before the first frame update
     void Start()
     {
-        //메뉴온오프액션
-        bt_showMenu.onClick.AddListener(() => MenuOpen());
+
+            //메뉴온오프액션
+            bt_showMenu.onClick.AddListener(() => MenuOpen());
         bt_hideMenu.onClick.AddListener(() => MenuClose());
         //메뉴외쪽액션
         bt_BackToMain.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[1])));
@@ -57,7 +62,7 @@ public class ButtonAction_CreateTemp : MonoBehaviour
         //하위 확인번트
         bt_YesBackToMain.onClick.AddListener(() => Manager.instance.SceneLoad("Main"));
         bt_YesResetFirst.onClick.AddListener(() => Manager.instance.ResetScene());
-        bt_YesMyArList.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[3], changeWindowList[5])));
+        bt_YesMyArList.onClick.AddListener(OpenMyARwindow);
 
     }
 
@@ -70,7 +75,7 @@ public class ButtonAction_CreateTemp : MonoBehaviour
         _animator.SetBool("IsOpen", true);
         menuClose = false;
         changeWindowList[0].SetActive(true);
-        Debug.Log("메뉴를 연다");
+        //Debug.Log("메뉴를 연다");
     }
     void MenuClose()
     {
@@ -79,7 +84,14 @@ public class ButtonAction_CreateTemp : MonoBehaviour
         bt_hideMenu.gameObject.SetActive(false);
         _animator.SetBool("IsOpen", false);
         menuClose = true;
-        Debug.Log("메뉴를 닫는다");
+        //Debug.Log("메뉴를 닫는다");
+    }
+
+    void OpenMyARwindow()
+    {
+        this.GetComponent<MyARList>().GetJsonWithMyList();
+        Debug.Log("마이에이알리스트창 띄우기");
+        StartCoroutine(OpenAfterCloseMenu(changeWindowList[3], changeWindowList[5]));
     }
     IEnumerator TakeAndSaveScreenshot()
     {
@@ -115,4 +127,6 @@ public class ButtonAction_CreateTemp : MonoBehaviour
         nextWindow.SetActive(true);
 
     }
+
+
 }
