@@ -31,6 +31,7 @@ public class ButtonAction : MonoBehaviour
 
     [Header("메뉴리스트")]
     public GameObject menuList;
+
     
     [Header("알람창")]
     public GameObject AlarmWindow;

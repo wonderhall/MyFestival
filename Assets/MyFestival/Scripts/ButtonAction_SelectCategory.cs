@@ -5,8 +5,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using ARLocation;
+using System.IO;
 
-public class BtuuonAction_SelectCategory : MonoBehaviour
+public class ButtonAction_SelectCategory : MonoBehaviour
 {
     [Header("상위창")]
     public GameObject defaultPages;
@@ -32,6 +34,8 @@ public class BtuuonAction_SelectCategory : MonoBehaviour
     private int idx = new int();
     private void Awake()
     {
+        Debug.Log(Application.persistentDataPath);
+
         foreach (var item in PagesToChange)
         {
             item.SetActive(false);
@@ -79,28 +83,31 @@ public class BtuuonAction_SelectCategory : MonoBehaviour
     //<--
     public void Placeable_ObjectList(Transform parent, ScriptableObject_CategoryItems scriptableObject)
     {
-
-        for (int i = 0; i < scriptableObject.placeableObjects.Length; i++)
+        if (parent.childCount == 0)
         {
 
-            string str = scriptableObject.placeableObjects[i].itemName;
+            for (int i = 0; i < scriptableObject.placeableObjects.Length; i++)
+            {
 
-            GameObject Newitem = Instantiate(AddItem_UIPrefab);
-            Newitem.transform.SetParent(parent, false);
-            Newitem.name = str + "_" + i;
-            //Newitem.AddComponent<ItemDrag>();
-            Newitem.AddComponent<Button>();
-            //스크럽터블 이미지 가져와서  넣기
-            Sprite img = scriptableObject.placeableObjects[i].preview;
-            Newitem.transform.GetChild(0).GetComponent<Image>().sprite = img;
-            //스크럽터블 이름 가져와서  넣기
-            Newitem.transform.GetChild(0).GetChild(0).GetComponent<Text>().text =
-                str;
-            //버튼기능 붙이기
-            Newitem.GetComponent<Button>().onClick.AddListener(delegate { createObjectAtScene(scriptableObject); });
+                string str = scriptableObject.placeableObjects[i].itemName;
+
+                GameObject Newitem = Instantiate(AddItem_UIPrefab);
+                Newitem.transform.SetParent(parent, false);
+                Newitem.name = str + "_" + i;
+                //Newitem.AddComponent<ItemDrag>();
+                Newitem.AddComponent<Button>();
+                //스크럽터블 이미지 가져와서  넣기
+                Sprite img = scriptableObject.placeableObjects[i].preview;
+                Newitem.transform.GetChild(0).GetComponent<Image>().sprite = img;
+                //스크럽터블 이름 가져와서  넣기
+                Newitem.transform.GetChild(0).GetChild(0).GetComponent<Text>().text =
+                    str;
+                //버튼기능 붙이기
+                Newitem.GetComponent<Button>().onClick.AddListener(delegate { createObjectAtScene(scriptableObject); });
 
 
-        }
+            }
+        }//if종료
     }
     /// <summary>
     /// 기즈모 부착된 오브젝트 생성
@@ -118,8 +125,17 @@ public class BtuuonAction_SelectCategory : MonoBehaviour
         Manager.instance.SeletedObjectIndex = num;
         //<--
         //    //템플릿을 저장할 빈오브젝트 saveRoot란 이름으로 생성하고 인스턴스생성 후 부모화
-        GameObject saveRoot = new GameObject("CurrentItemList");
+        if (!GameObject.Find("---CurrentItemList---"))
+        {
+            GameObject rootobj = new GameObject("---CurrentItemList---");
+            saveRoot = rootobj;
+        }
+        else
+            saveRoot = GameObject.Find("---CurrentItemList---");
+
+
         Transform newIns = Instantiate(scriptableObject.placeableObjects[num].prefab, saveRoot.transform);
+        newIns.name = tempBtn.name;
 
         //기즈모 부착
         if (GameObject.FindObjectOfType<RuntimeTransformHandle>())
@@ -131,5 +147,33 @@ public class BtuuonAction_SelectCategory : MonoBehaviour
         handler.autoScale = true;
         handler.autoScaleFactor = 1.5f;
     }
-   
+
+    public void saveTemple()
+    {
+        ARLocationProvider aRLocationProvider = GameObject.FindObjectOfType<ARLocationProvider>();
+        Manager.instance.latitude = aRLocationProvider.CurrentLocation.latitude;
+        Manager.instance.longitude = aRLocationProvider.CurrentLocation.longitude;
+        Manager.instance.date = DateTime.Now.ToString("yyyy.MM.dd_hh:mm:ss");
+        //Manager.instance.date = DateTime.Now.ToString("yyyy.MM.dd_hh.mm.ss");
+
+
+        Transform itemlist = GameObject.Find("---CurrentItemList---").transform;
+        List<Transform> tempList = new List<Transform>();
+
+        for (int i = 0; i < itemlist.childCount; i++)
+        {
+            tempList.Add(itemlist.GetChild(i).transform);
+        }
+
+        //폴더 유뮤 체크
+        if (!Directory.Exists(SaveLoadTemplete.SavePath))
+        {
+            Directory.CreateDirectory(SaveLoadTemplete.SavePath);
+
+            File.WriteAllText(SaveLoadTemplete.SavePath + "myTemplete.json",null);
+        }
+
+
+        SaveLoadTemplete.SaveTemplete(tempList);
+    }
 }

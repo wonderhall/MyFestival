@@ -11,6 +11,13 @@ public class Manager : MonoBehaviour
     [Header("유저아이디")]
     public string userID;
 
+    [Header("날자")]
+    public string date;
+    [Header("위도")]
+    public double latitude;
+    [Header("경도")]
+    public double longitude;
+
     [Header("현재 선택한 스크립트오브젝트")]
     public ScriptableObject_CategoryItems scriptableObject;
     [Header("현재 선택한 오브젝트 이름")]
