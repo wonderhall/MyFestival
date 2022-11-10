@@ -165,13 +165,13 @@ public class ButtonAction_SelectCategory : MonoBehaviour
             tempList.Add(itemlist.GetChild(i).transform);
         }
 
-        //폴더 유뮤 체크
-        if (!Directory.Exists(SaveLoadTemplete.SavePath))
-        {
-            Directory.CreateDirectory(SaveLoadTemplete.SavePath);
+        ////폴더 유뮤 체크
+        //if (!Directory.Exists(SaveLoadTemplete.SavePath))
+        //{
+        //    Directory.CreateDirectory(SaveLoadTemplete.SavePath);
 
-            File.WriteAllText(SaveLoadTemplete.SavePath + "myTemplete.json",null);
-        }
+        //    File.WriteAllText(SaveLoadTemplete.SavePath + "myTemplete.json",null);
+        //}
 
 
         SaveLoadTemplete.SaveTemplete(tempList);

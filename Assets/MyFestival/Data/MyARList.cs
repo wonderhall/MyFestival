@@ -29,7 +29,14 @@ public class MyARList : MonoBehaviour
         {
             Directory.CreateDirectory(SaveLoadTemplete.SavePath);
 
-            File.WriteAllText(SaveLoadTemplete.SavePath + "myTemplete.json", null);
+            //File.WriteAllText(SaveLoadTemplete.SavePath + "myTemplete.json", null);
+
+            string toJson = JsonConvert.SerializeObject(null);
+            Byte[] data2 = Encoding.UTF8.GetBytes(toJson);
+            FileStream streamSave = new FileStream(SaveLoadTemplete.SavePath + "myTemplete.json"
+                , FileMode.OpenOrCreate);
+            streamSave.Write(data2, 0, data2.Length);
+            streamSave.Close();
         }
 
 
