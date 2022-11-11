@@ -89,7 +89,7 @@ public class GameManager : MonoBehaviour
         if (_time > interval)
         {
             //print("do");
-            mAction.Instance.ChangeUiRotation();
+            //mAction.Instance.ChangeUiRotation();
             _time = 0;
         }
     }
