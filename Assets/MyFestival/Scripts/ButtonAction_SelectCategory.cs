@@ -7,18 +7,23 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using ARLocation;
 using System.IO;
+using Newtonsoft.Json;
+using System.Text;
 
 public class ButtonAction_SelectCategory : MonoBehaviour
 {
     [Header("상위창")]
     public GameObject defaultPages;
+    [Header("elementPage")]
+    public GameObject ElementPages;
     [Header("하위창")]
-    public GameObject[] PagesToChange = new GameObject[5];
+    public GameObject[] PagesToChange = new GameObject[6];
     [Header("카테고리선택버튼")]
     public Button[] Bt_SelectType = new Button[5];
     [Header("카테고리페이지 탈출")]
     public Button bt_caterogryExit;
-
+    [Header("사이드 패널")]
+    public GameObject[] sidePanel= new GameObject[2];
 
 
     [Header("ui root")]
@@ -30,17 +35,23 @@ public class ButtonAction_SelectCategory : MonoBehaviour
     public List<ScOBJ_ItemInfo> List3DObject;
 
     //temp
-    public GameObject saveRoot;
+    private GameObject saveRoot;
     private int idx = new int();
     private void Awake()
     {
-        Debug.Log(Application.persistentDataPath);
-
+        //파일이 없으면 오류가 나니 먼저 빈오브젝트 생성
+        if (!Directory.Exists(SaveLoadTemplete.SavePath)) SaveLoadTemplete.newEmptyData();
+      
+  //페이지 초기 온오프
         foreach (var item in PagesToChange)
         {
             item.SetActive(false);
         }
-    }
+        for (int i = 0; i < PagesToChange[5].transform.childCount; i++)
+        {
+            PagesToChange[5].transform.GetChild(i).gameObject.SetActive(true);
+        }
+     }
     private void Start()
     {
         Bt_SelectType[0].onClick.AddListener(() => ShowCategoryList(0, SO_3DObject));
@@ -51,17 +62,13 @@ public class ButtonAction_SelectCategory : MonoBehaviour
 
         bt_caterogryExit.onClick.AddListener(categoryExit);
 
-        ////카테고리 버튼
-        //Bt_SelectType[0].onClick.AddListener(() =>ShowCategoryList(0));
 
     }
     //-->버튼액션
     void ShowCategoryList(int idx, ScriptableObject_CategoryItems scriptableObject)
     {
         switchPage(idx);
-        Transform parent = PagesToChange[idx].transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0);
-        Placeable_ObjectList(parent, scriptableObject);
-        print(parent);
+        Placeable_ObjectList(contentsRoot.transform, scriptableObject);
     }
     public void switchPage(int idx)
     {
@@ -77,7 +84,6 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         {
             page.SetActive(false);
         }
-        this.gameObject.SetActive(false);
     }
 
     //<--
@@ -128,6 +134,8 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         if (!GameObject.Find("---CurrentItemList---"))
         {
             GameObject rootobj = new GameObject("---CurrentItemList---");
+            Vector3 positionOffset = new Vector3(0, 0, 2);
+            rootobj.transform.position = positionOffset;
             saveRoot = rootobj;
         }
         else
@@ -150,30 +158,51 @@ public class ButtonAction_SelectCategory : MonoBehaviour
 
     public void saveTemple()
     {
+
         ARLocationProvider aRLocationProvider = GameObject.FindObjectOfType<ARLocationProvider>();
         Manager.instance.latitude = aRLocationProvider.CurrentLocation.latitude;
         Manager.instance.longitude = aRLocationProvider.CurrentLocation.longitude;
-        Manager.instance.date = DateTime.Now.ToString("yyyy.MM.dd_hh:mm:ss");
-        //Manager.instance.date = DateTime.Now.ToString("yyyy.MM.dd_hh.mm.ss");
+        Manager.instance.date = DateTime.Now.ToString("yyyy.MM.dd_hh.mm.ss");
 
 
-        Transform itemlist = GameObject.Find("---CurrentItemList---").transform;
-        List<Transform> tempList = new List<Transform>();
-
-        for (int i = 0; i < itemlist.childCount; i++)
+            List<Transform> tempList = new List<Transform>();
+        if (GameObject.Find("---CurrentItemList---"))
         {
-            tempList.Add(itemlist.GetChild(i).transform);
+            Transform itemlist = GameObject.Find("---CurrentItemList---").transform;
+            for (int i = 0; i < itemlist.childCount; i++)
+            {
+                tempList.Add(itemlist.GetChild(i).transform);
+            }
         }
 
-        ////폴더 유뮤 체크
-        //if (!Directory.Exists(SaveLoadTemplete.SavePath))
-        //{
-        //    Directory.CreateDirectory(SaveLoadTemplete.SavePath);
+        // SaveLoadTemplete.SaveTemplete(tempList);
 
-        //    File.WriteAllText(SaveLoadTemplete.SavePath + "myTemplete.json",null);
-        //}
-
-
+        //프리뷰저장시작
+        string savepriviewPath = SaveLoadTemplete.SavePath + Manager.instance.date + ".png";
         SaveLoadTemplete.SaveTemplete(tempList);
+        StartCoroutine(TakePreview(savepriviewPath));
+
     }
+  
+    IEnumerator TakePreview(string fileName)
+    {
+        foreach (GameObject page in sidePanel) page.SetActive(false); //스샷찍기 전에 가리는거 치우기
+
+        yield return new WaitForSeconds(0.1f);
+        yield return new WaitForEndOfFrame();
+
+        Texture2D texture = new Texture2D(Screen.width, Screen.height, TextureFormat.RGB24, true);
+        texture.ReadPixels(new Rect(0, 0, Screen.width, Screen.height), 0, 0);
+        texture.LoadRawTextureData(texture.GetRawTextureData());
+        texture.Apply();
+        byte[] bytes = texture.EncodeToPNG();
+        File.WriteAllBytes(fileName, bytes); //filename은 path + name
+        yield return new WaitForChangedResult();
+
+        foreach (GameObject page in sidePanel) page.SetActive(true);//찍고 나서 보이기
+
+    }
+
+
+
 }

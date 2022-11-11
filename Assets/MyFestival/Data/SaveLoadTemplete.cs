@@ -9,7 +9,7 @@ using System.Text;
 public static class SaveLoadTemplete
 {
 
-    public static string SavePath => Application.dataPath + "/MyFestival/JsonData/";
+    public static string SavePath => Application.persistentDataPath + "/JsonData/";
 
     // Start is called before the first frame update
 
@@ -18,14 +18,6 @@ public static class SaveLoadTemplete
     {
 
 
-        Transform itemRoot = GameObject.Find("---CurrentItemList---").transform;
-
-        //for (int i = 0; i < itemRoot.childCount; i++)
-        //{
-        //    if (itemRoot.childCount == 0) return;
-
-        //    currentItems.Add(itemRoot.GetChild(i));
-        //}
         ItemPositon itemPo = new ItemPositon();
         ItemRotate itemRot = new ItemRotate();
         ItemScale itemScale = new ItemScale();
@@ -35,6 +27,7 @@ public static class SaveLoadTemplete
         MyTemplete my_templete = new MyTemplete();
 
         curTem.tempeteName = Manager.instance.date;
+        curTem.PreviewName = Manager.instance.date;
         curTem.date = Manager.instance.date;
         curTem.latitude = Manager.instance.latitude;
         curTem.longitude = Manager.instance.longitude;
@@ -74,8 +67,10 @@ public static class SaveLoadTemplete
         //
 
 
-
+        
         bool isDataNone = false;
+        if (!Directory.Exists(SavePath)) newEmptyData();
+
         FileStream streamOpen = new FileStream(saveFilePath, FileMode.Open);
         Byte[] data = new byte[streamOpen.Length];
         streamOpen.Read(data, 0, data.Length);
@@ -90,6 +85,10 @@ public static class SaveLoadTemplete
         else
         {
             isDataNone = false;
+
+
+
+
 
             string fromJson = Encoding.UTF8.GetString(data);
             MyTemplete DeserialJson = JsonConvert.DeserializeObject<MyTemplete>(fromJson);
@@ -123,6 +122,34 @@ public static class SaveLoadTemplete
         streamSave.Write(data2, 0, data2.Length);
         streamSave.Close();
         //
+
+
+    }
+
+    public static void SaveTemplete(MyTemplete myTemp, GameObject page)
+    {
+
+
+        page.SetActive(false);
+        string toJson = JsonConvert.SerializeObject(myTemp);
+        Byte[] data = Encoding.UTF8.GetBytes(toJson);
+        FileStream streamSave = new FileStream(SavePath + "myTemplete.json", FileMode.Create);
+        streamSave.Write(data, 0, data.Length);
+        streamSave.Close();
+
+    }
+
+    public static void newEmptyData()
+    {
+        if (!Directory.Exists(SavePath))
+            Directory.CreateDirectory(SavePath);
+
+            MyTemplete newMyTemplete = new MyTemplete();
+            FileStream streamSave = new FileStream(SaveLoadTemplete.SavePath + "myTemplete.json", FileMode.Create);
+            string toJson = JsonConvert.SerializeObject(newMyTemplete);
+            Byte[] data2 = Encoding.UTF8.GetBytes(toJson);
+            streamSave.Write(data2, 0, data2.Length);
+            streamSave.Close();
 
 
     }

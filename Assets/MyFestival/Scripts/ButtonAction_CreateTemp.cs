@@ -16,7 +16,6 @@ public class ButtonAction_CreateTemp : MonoBehaviour
     public Button bt_BackToMain;
     public Button bt_ResetFirst;
     public Button bt_Save;
-    public Button bt_SaveAsCopy;
     public Button bt_MyArList;
 
     [Header("오른쪽사이드바 버튼들")]
@@ -48,8 +47,7 @@ public class ButtonAction_CreateTemp : MonoBehaviour
         //메뉴외쪽액션
         bt_BackToMain.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[1])));
         bt_ResetFirst.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[2])));
-        bt_Save.onClick.AddListener(()=>StartCoroutine(SshotAlarm(AlarmWindow[1])));
-        bt_SaveAsCopy.onClick.AddListener(() => StartCoroutine(SshotAlarm(AlarmWindow[2])));
+        bt_Save.onClick.AddListener(SaveObjectList);
         bt_MyArList.onClick.AddListener(()=>StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[3])));
         //bt_SaveAsCopy.onClick.AddListener(() =>);
         //bt_MyArList.onClick.AddListener(() =>);
@@ -87,15 +85,23 @@ public class ButtonAction_CreateTemp : MonoBehaviour
         //Debug.Log("메뉴를 닫는다");
     }
 
+    void SaveObjectList()
+    {
+        StartCoroutine(SshotAlarm(AlarmWindow[1]));
+        this.GetComponent<ButtonAction_SelectCategory>().saveTemple();
+    }
     void OpenMyARwindow()
     {
+        //폴더 유뮤 체크
+        if (!Directory.Exists(SaveLoadTemplete.SavePath)) SaveLoadTemplete.newEmptyData();
+
         this.GetComponent<MyARList>().GetJsonWithMyList();
-        Debug.Log("마이에이알리스트창 띄우기");
+        //Debug.Log("마이에이알리스트창 띄우기");
         StartCoroutine(OpenAfterCloseMenu(changeWindowList[3], changeWindowList[5]));
     }
     IEnumerator TakeAndSaveScreenshot()
     {
-        Debug.Log("찰칵");
+        //Debug.Log("찰칵");
         yield return new WaitForEndOfFrame();
 
         Texture2D screenImage = new Texture2D(Screen.width, Screen.height);
@@ -114,7 +120,7 @@ public class ButtonAction_CreateTemp : MonoBehaviour
     IEnumerator SshotAlarm(GameObject alarmWindow)
     {
         alarmWindow.SetActive(true);
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
         alarmWindow.SetActive(false);
 
     }

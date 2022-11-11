@@ -20,30 +20,36 @@ public class MyARList : MonoBehaviour
     public Transform contentsRoot;
     [Header("생성할 ui")]
     public GameObject AddItem_UIPrefab;
+    [Header("교체 페이지 리스트")]
+    public GameObject[] SelectedTempletePage;
 
-
-
-    public void GetJsonWithMyList()
+    private Dictionary<string, CurrentTemplete> DicMyTemp;
+    private void Awake()
     {
-        if (!Directory.Exists(SaveLoadTemplete.SavePath))
+        if (GameObject.Find("Window_MyList"))
         {
-            Directory.CreateDirectory(SaveLoadTemplete.SavePath);
-
-            //File.WriteAllText(SaveLoadTemplete.SavePath + "myTemplete.json", null);
-
-            string toJson = JsonConvert.SerializeObject(null);
-            Byte[] data2 = Encoding.UTF8.GetBytes(toJson);
-            FileStream streamSave = new FileStream(SaveLoadTemplete.SavePath + "myTemplete.json"
-                , FileMode.OpenOrCreate);
-            streamSave.Write(data2, 0, data2.Length);
-            streamSave.Close();
+            GetJsonWithMyList();
         }
+    }
 
-
-        //패스
+    public void GetJsonWithMyList()//마이리스트창을 열면서 전에 만들어 놓은 오브젝트 삭제
+    {        //패스
         string saveFileName = "myTemplete";
         string saveFilePath = SaveLoadTemplete.SavePath + saveFileName + ".json";
         //
+
+        if (GameObject.Find("---CurrentItemList---"))
+        {
+            GameObject root = GameObject.Find("---CurrentItemList---");
+            for (int i = 0; i < root.transform.childCount; i++)
+            {
+                Destroy(root.transform.GetChild(i).gameObject);
+            }
+            GameObject handle = GameObject.Find("handler");
+            Destroy(handle);
+        }
+        if (!Directory.Exists(SaveLoadTemplete.SavePath)) Directory.CreateDirectory(saveFilePath);
+
         FileStream streamOpen = new FileStream(saveFilePath, FileMode.Open);
         Byte[] data = new byte[streamOpen.Length];
         streamOpen.Read(data, 0, data.Length);
@@ -53,7 +59,8 @@ public class MyARList : MonoBehaviour
         //불러오기 성공
         Debug.Log("myArList Load is sucess");
         //딕셔너리저장
-        Dictionary<string, CurrentTemplete> DicMyTemp = new Dictionary<string, CurrentTemplete>();
+        //Dictionary<string, CurrentTemplete> DicMyTemp = new Dictionary<string, CurrentTemplete>(); 
+        DicMyTemp = new Dictionary<string, CurrentTemplete>();
         if (DeserialJson != null)
             foreach (var item in DeserialJson.myTemplete)
             {
@@ -74,38 +81,91 @@ public class MyARList : MonoBehaviour
                 Newitem.transform.GetChild(1).GetComponent<Text>().text = str;
 
 
-                ////버튼기능 붙이기
-                //Newitem.GetComponent<Button>().onClick.AddListener(delegate { createObjectAtScene(scriptableObject); });
-
-
+                //버튼기능 붙이기
+                Newitem.GetComponent<Button>().onClick.AddListener(delegate { ShowSelectedTempleInfo(str, DicMyTemp); });
             }
         }//if종료
         else Debug.Log("이미만들어져있다");
 
     }
+    void ShowSelectedTempleInfo(string name, Dictionary<string, CurrentTemplete> dic)
+    {
+        SelectedTempletePage[0].SetActive(false);//해당페이지 오픈
+        SelectedTempletePage[1].SetActive(true);//해당페이지 오픈
 
-    ////창열고 닫기
+        GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
 
-    //public void switchPage(int idx)
-    //{
-    //    switch (idx)
-    //    {
-    //        case (0):
-    //            PagesToChange[0].SetActive(true);
-    //            PagesToChange[1].SetActive(false);
-    //            break;
+        CurrentTemplete thisTempleteInfo = new CurrentTemplete();
+        dic.TryGetValue(name, out thisTempleteInfo);//딕셔너리에서 이름으로 발류에해당하는 클리스 뽑아온다.
 
-    //        case (1):
-    //            PagesToChange[0].SetActive(false);
-    //            PagesToChange[1].SetActive(true);
-    //            break;
-
-    //        default:
-    //            PagesToChange[0].SetActive(true);
-    //            PagesToChange[1].SetActive(false);
-    //            break;
-    //    }
-    //}
+        string date = thisTempleteInfo.date;
+        string previewName = thisTempleteInfo.PreviewName;
+        double latitude = thisTempleteInfo.latitude;
+        double longitude = thisTempleteInfo.longitude;
 
 
+        ////정보넣기
+        GameObject icon = GameObject.Find("IconText");
+        icon.GetComponent<Text>().text = name; //이름
+        //
+        GameObject TemDate = GameObject.Find("Text_Date");
+        TemDate.GetComponent<Text>().text = date;  //날자
+                                                   //                                          ////
+        GameObject gps = GameObject.Find("Text_GPS");
+        gps.GetComponent<Text>().text = latitude.ToString() + "," + longitude.ToString();  //gps
+                                                                                           
+
+        GameObject preview = GameObject.Find("Preview");
+        preview.GetComponent<Image>().sprite = PreviewTextrueLoad(previewName); //프리뷰
+
+        GameObject previewSmall = GameObject.Find("PreviewSmall");
+        previewSmall.GetComponent<Image>().sprite = PreviewTextrueLoad(previewName); //프리뷰
+
+        Button renamer = GameObject.Find("Bt_Renamer").GetComponent<Button>();
+        renamer.onClick.AddListener(ShowRenameEditor);
+
+
+
+        //func
+        Button Bt_deleteTemp = GameObject.Find("Bt_Delete").GetComponent<Button>();
+        Bt_deleteTemp.onClick.AddListener(() => deleteTempFromList(name, SelectedTempletePage[1], selectedObject));
+
+
+
+    }
+
+    void deleteTempFromList(string name, GameObject page, GameObject selectedObject)
+    {
+        if (DicMyTemp.ContainsKey(name)) DicMyTemp.Remove(name); //dic에서 이름으로 지우기
+
+        MyTemplete newTemp = new MyTemplete();  //다시 쓰기 위해 클래스를 만들고 넣어 주다.
+        foreach (var item in DicMyTemp)
+        {
+            newTemp.myTemplete.Add(item.Value);
+        }
+        Destroy(selectedObject);
+        SaveLoadTemplete.SaveTemplete(newTemp, page);
+    }
+
+    Sprite PreviewTextrueLoad(string name)
+    {
+
+        string path = SaveLoadTemplete.SavePath + name+".png";
+        Texture2D tex = null;    //빈 택스쳐 생성후 바이트로 로드하고 넣어준다.
+        byte[] filedata;
+        filedata = File.ReadAllBytes(path);
+        tex = new Texture2D(0, 0);
+        tex.LoadImage(filedata);  //넣어줬다.
+
+        Rect rect = new Rect(0, 0, tex.width, tex.height);
+        Sprite sprite = Sprite.Create(tex, rect, new Vector2(0, 0), 1); //스프라이트로 변경
+
+        return sprite;
+
+    }
+
+    void ShowRenameEditor()
+    {
+
+    }
 }

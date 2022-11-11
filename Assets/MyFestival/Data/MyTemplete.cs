@@ -18,6 +18,7 @@ public class MyTemplete
 public class CurrentTemplete
 {
     public string tempeteName;
+    public string PreviewName;
     public string date;
     public double latitude;
     public double longitude;

@@ -18,27 +18,12 @@ public class CreateParsingObj : MonoBehaviour
     public Transform root;
     private void Start()
     {
-        //아이템생성//
-        //SaveLoadTemplete.SaveTemplete(itemList);
+        Vector3 positonOffset = new Vector3(0f, 0f, 2.0f);
+        root.position = positonOffset;
 
-
-        CreateTempleteFromJson<CreateTemplete>();
-
-
-
-
-
-        //foreach (var itemlist in templete.items)
-        //{
-        //    itemDic.Add(itemlist.ID, itemlist.itemTranform);
-        //}
-
-        //foreach (KeyValuePair<int,List<ItemTransform>> val in itemDic)
-        //{
-        //    Debug.Log(val.Value);
-        //}
+        CreateTempleteFromJson();
     }
-    public void CreateTempleteFromJson<T>()
+    public void CreateTempleteFromJson()
     {
         //데이타 읽어오기
         string data = SaveLoadTemplete.SavePath + JsonFileName + ".json";
