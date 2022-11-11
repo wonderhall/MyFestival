@@ -22,7 +22,7 @@ public class CreateParsingObj : MonoBehaviour
         //SaveLoadTemplete.SaveTemplete(itemList);
 
 
-        CreateTempleteFromJson<CreateTemplete>();
+        //CreateTempleteFromJson<CreateTemplete>();
 
 
 
