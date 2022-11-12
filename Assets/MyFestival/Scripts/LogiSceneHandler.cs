@@ -5,6 +5,7 @@ using Proyecto26;
 using System.Collections.Generic;
 using System.Text;
 using EasyUI.Toast;
+using UnityEngine.SceneManagement;
 
 public class LogiSceneHandler : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class LogiSceneHandler : MonoBehaviour
     public TMP_InputField email_inputField;
     public TMP_InputField password_InputField;
     public Button loginButton;
+    public Button signupButton;
 
     // Start is called before the first frame update
     void Start()
@@ -21,9 +23,14 @@ public class LogiSceneHandler : MonoBehaviour
         email_inputField.text = "chanoo";
         password_InputField.text = "chanoo";
         loginButton.onClick.AddListener(OnClickLogin);
+        signupButton.onClick.AddListener(OnClickSignup);
 
         var token = PlayerPrefs.GetString("token");
         Debug.Log(token);
+        if (token.Length > 0)
+        {
+//            SceneManager.LoadScene("Main");
+        }
     }
 
     // Update is called once per frame
@@ -36,6 +43,11 @@ public class LogiSceneHandler : MonoBehaviour
     {
         Debug.Log(text + " - 글자 입력 중");
         email_inputField.text = text;
+    }
+
+    public void OnClickSignup()
+    {
+        SceneManager.LoadScene("SignupScene");
     }
 
     public void OnClickLogin()
@@ -61,8 +73,9 @@ public class LogiSceneHandler : MonoBehaviour
             PlayerPrefs.SetString("token", token);
             var json = decodeToken(token);
             Toast.Show(json);
+            SceneManager.LoadScene("Main");
         })
-        .Catch(err => Toast.Show("아이디 또는 비밀번호가 틀렸습니다."));
+        .Catch(err => Toast.Show(err.Message));
     }
 
     private string decodeToken(string token)
