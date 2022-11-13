@@ -71,7 +71,7 @@ public class LogiSceneHandler : MonoBehaviour
             PlayerPrefs.SetString("token", token);
             var json = decodeToken(token);
             Toast.Show(json);
-            SceneManager.LoadScene("Main");
+            SceneManager.LoadScene("CreateNewTemp");
         })
         .Catch(err => {
             var error = err as RequestException;

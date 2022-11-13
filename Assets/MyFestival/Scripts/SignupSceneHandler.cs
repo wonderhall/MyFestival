@@ -47,8 +47,8 @@ public class SignupSceneHandler : MonoBehaviour
         .Then(response => {
             var token = response.Text;
             PlayerPrefs.SetString("token", token);
-            var json = decodeToken(token);
-            Toast.Show(json);
+            Toast.Show("환영합니다.");
+            SceneManager.LoadScene("Main");
         })
         .Catch(err => {
             var error = err as RequestException;
