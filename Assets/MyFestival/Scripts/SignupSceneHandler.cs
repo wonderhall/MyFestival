@@ -50,7 +50,11 @@ public class SignupSceneHandler : MonoBehaviour
             var json = decodeToken(token);
             Toast.Show(json);
         })
-        .Catch(err => Toast.Show(err.Message));
+        .Catch(err => {
+            var error = err as RequestException;
+            var exception = JsonUtility.FromJson<ServerException>(error.Response);
+            Toast.Show(exception.error);
+            });
     }
 
     public void OnClickLogin()
