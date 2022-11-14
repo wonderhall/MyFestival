@@ -24,27 +24,27 @@ MonoBehaviour:
     m_Scopes: []
     m_IsDefault: 1
     m_Capabilities: 7
-  - m_Id: scoped:Shtif Registry
-    m_Name: Shtif Registry
+  - m_Id: scoped:sHTif
+    m_Name: sHTif
     m_Url: http://package.binaryego.com:4873
     m_Scopes:
     - com.shtif
     m_IsDefault: 0
     m_Capabilities: 0
-  m_UserSelectedRegistryName: Shtif Registry
+  m_UserSelectedRegistryName: sHTif
   m_UserAddingNewScopedRegistry: 0
   m_RegistryInfoDraft:
     m_ErrorMessage: 
     m_Original:
-      m_Id: scoped:Shtif Registry
-      m_Name: Shtif Registry
+      m_Id: scoped:sHTif
+      m_Name: sHTif
       m_Url: http://package.binaryego.com:4873
       m_Scopes:
       - com.shtif
       m_IsDefault: 0
       m_Capabilities: 0
     m_Modified: 0
-    m_Name: Shtif Registry
+    m_Name: sHTif
     m_Url: http://package.binaryego.com:4873
     m_Scopes:
     - com.shtif

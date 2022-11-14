@@ -6,7 +6,7 @@ using UnityEngine;
 [Serializable]
 public class ScOBJ_ItemInfo
 {
-    public string itemName;
+    //public string itemName;
     public Sprite preview;
     public Transform prefab;
 }

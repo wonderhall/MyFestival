@@ -60,7 +60,7 @@ public class CreateTemplete : MonoBehaviour
 
         foreach (var item in items.items)
         {
-            Debug.Log(item.iName);
+            Debug.Log(item.prefab.name);
         }
 
 

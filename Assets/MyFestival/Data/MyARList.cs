@@ -7,7 +7,7 @@ using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-
+using UnityEngine.Events;
 
 public class MyARList : MonoBehaviour
 {
@@ -113,10 +113,11 @@ public class MyARList : MonoBehaviour
                                                    //                                          ////
         GameObject gps = GameObject.Find("Text_GPS");
         gps.GetComponent<Text>().text = latitude.ToString() + "," + longitude.ToString();  //gps
-                                                                                           
+
 
         GameObject preview = GameObject.Find("Preview");
         preview.GetComponent<Image>().sprite = PreviewTextrueLoad(previewName); //프리뷰
+        preview.AddComponent<Button>().onClick.AddListener(ShowCurrentTemplet(thisTempleteInfo.items.ToArray));
 
         GameObject previewSmall = GameObject.Find("PreviewSmall");
         previewSmall.GetComponent<Image>().sprite = PreviewTextrueLoad(previewName); //프리뷰
@@ -132,6 +133,11 @@ public class MyARList : MonoBehaviour
 
 
 
+    }
+
+    private UnityAction ShowCurrentTemplet(Func<CurItemList[]> toArray)
+    {
+        throw new NotImplementedException();
     }
 
     void deleteTempFromList(string name, GameObject page, GameObject selectedObject)
@@ -150,7 +156,7 @@ public class MyARList : MonoBehaviour
     Sprite PreviewTextrueLoad(string name)
     {
 
-        string path = SaveLoadTemplete.SavePath + name+".png";
+        string path = SaveLoadTemplete.SavePath + name + ".png";
         Texture2D tex = null;    //빈 택스쳐 생성후 바이트로 로드하고 넣어준다.
         byte[] filedata;
         filedata = File.ReadAllBytes(path);
@@ -167,5 +173,12 @@ public class MyARList : MonoBehaviour
     void ShowRenameEditor()
     {
 
+    }
+    void ShowCurrentTemplet(CurItemList[] items)
+    {
+        foreach (var item in items)
+        {
+          Debug.Log(item.ItemName);
+        }
     }
 }

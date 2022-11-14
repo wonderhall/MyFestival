@@ -23,16 +23,16 @@ public class ButtonAction_SelectCategory : MonoBehaviour
     [Header("카테고리페이지 탈출")]
     public Button bt_caterogryExit;
     [Header("사이드 패널")]
-    public GameObject[] sidePanel= new GameObject[2];
+    public GameObject[] sidePanel = new GameObject[2];
 
 
-    [Header("ui root")]
-    public GameObject contentsRoot;
+    //[Header("ui root")]
+    //public GameObject contentsRoot;
     [Header("생성할 ui")]
     public GameObject AddItem_UIPrefab;
 
-    public ScriptableObject_CategoryItems SO_3DObject;
-    public List<ScOBJ_ItemInfo> List3DObject;
+    public ScriptableObject_CategoryItems[] SO_List = new ScriptableObject_CategoryItems[5];
+    //public List<ScOBJ_ItemInfo> List3DObject;
 
     //temp
     private GameObject saveRoot;
@@ -41,8 +41,8 @@ public class ButtonAction_SelectCategory : MonoBehaviour
     {
         //파일이 없으면 오류가 나니 먼저 빈오브젝트 생성
         if (!Directory.Exists(SaveLoadTemplete.SavePath)) SaveLoadTemplete.newEmptyData();
-      
-  //페이지 초기 온오프
+
+        //페이지 초기 온오프
         foreach (var item in PagesToChange)
         {
             item.SetActive(false);
@@ -51,14 +51,14 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         {
             PagesToChange[5].transform.GetChild(i).gameObject.SetActive(true);
         }
-     }
+    }
     private void Start()
     {
-        Bt_SelectType[0].onClick.AddListener(() => ShowCategoryList(0, SO_3DObject));
-        Bt_SelectType[1].onClick.AddListener(() => ShowCategoryList(1, SO_3DObject));
-        Bt_SelectType[2].onClick.AddListener(() => ShowCategoryList(2, SO_3DObject));
-        Bt_SelectType[3].onClick.AddListener(() => ShowCategoryList(3, SO_3DObject));
-        Bt_SelectType[4].onClick.AddListener(() => ShowCategoryList(4, SO_3DObject));
+        Bt_SelectType[0].onClick.AddListener(() => ShowCategoryList(0, SO_List[0]));
+        Bt_SelectType[1].onClick.AddListener(() => ShowCategoryList(1, SO_List[1]));
+        Bt_SelectType[2].onClick.AddListener(() => ShowCategoryList(2, SO_List[2]));
+        Bt_SelectType[3].onClick.AddListener(() => ShowCategoryList(3, SO_List[3]));
+        Bt_SelectType[4].onClick.AddListener(() => ShowCategoryList(4, SO_List[4]));
 
         bt_caterogryExit.onClick.AddListener(categoryExit);
 
@@ -67,8 +67,9 @@ public class ButtonAction_SelectCategory : MonoBehaviour
     //-->버튼액션
     void ShowCategoryList(int idx, ScriptableObject_CategoryItems scriptableObject)
     {
+
         switchPage(idx);
-        Placeable_ObjectList(contentsRoot.transform, scriptableObject);
+        Placeable_ObjectList(idx, scriptableObject);
     }
     public void switchPage(int idx)
     {
@@ -87,18 +88,21 @@ public class ButtonAction_SelectCategory : MonoBehaviour
     }
 
     //<--
-    public void Placeable_ObjectList(Transform parent, ScriptableObject_CategoryItems scriptableObject)
+    public void Placeable_ObjectList(int idx, ScriptableObject_CategoryItems scriptableObject)
     {
-        if (parent.childCount == 0)
-        {
+        Debug.Log(scriptableObject.name);
+        Debug.Log(PagesToChange[idx].transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).gameObject.name);
+        Transform root = PagesToChange[idx].transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).transform;
 
+        if (root.childCount == 0)
+        {
             for (int i = 0; i < scriptableObject.placeableObjects.Length; i++)
             {
 
-                string str = scriptableObject.placeableObjects[i].itemName;
+                string str = scriptableObject.placeableObjects[i].prefab.name;
 
                 GameObject Newitem = Instantiate(AddItem_UIPrefab);
-                Newitem.transform.SetParent(parent, false);
+                Newitem.transform.SetParent(root, false);
                 Newitem.name = str + "_" + i;
                 //Newitem.AddComponent<ItemDrag>();
                 Newitem.AddComponent<Button>();
@@ -165,7 +169,7 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         Manager.instance.date = DateTime.Now.ToString("yyyy.MM.dd_hh.mm.ss");
 
 
-            List<Transform> tempList = new List<Transform>();
+        List<Transform> tempList = new List<Transform>();
         if (GameObject.Find("---CurrentItemList---"))
         {
             Transform itemlist = GameObject.Find("---CurrentItemList---").transform;
@@ -183,7 +187,7 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         StartCoroutine(TakePreview(savepriviewPath));
 
     }
-  
+
     IEnumerator TakePreview(string fileName)
     {
         foreach (GameObject page in sidePanel) page.SetActive(false); //스샷찍기 전에 가리는거 치우기

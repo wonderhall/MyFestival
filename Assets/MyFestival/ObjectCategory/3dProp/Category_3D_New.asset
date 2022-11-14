@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c05e20d1910e3f34fa228929d5f97fbc, type: 3}
+  m_Name: Category_3D_New
+  m_EditorClassIdentifier: 
+  placeableObjects:
+  - preview: {fileID: 21300000, guid: 46ea61ba732280545a8ac8c7a29ff7a4, type: 3}
+    prefab: {fileID: 4992961032837222977, guid: 1a90330b660e1d14287acf8c12c6c565,
+      type: 3}
+  - preview: {fileID: 21300000, guid: e76b625f531e8c844a4753bb3f6d93b1, type: 3}
+    prefab: {fileID: 2824907985523991721, guid: 6452aa53c4fe3184f82baad4c266929a,
+      type: 3}
+  - preview: {fileID: 21300000, guid: e571faed67d1c354c881c873b32d607d, type: 3}
+    prefab: {fileID: 6260311890642417485, guid: 1db4bd0751a2f1e4aa2b19997c2ef923,
+      type: 3}
+  - preview: {fileID: 21300000, guid: e98d0c47acf5ce14cab7d2a381f29285, type: 3}
+    prefab: {fileID: 2231167048648246856, guid: 0b9ae5a076c1bf94abd0b62f5d2d5d82,
+      type: 3}
+  - preview: {fileID: 21300000, guid: 08b9e7e672cdfe04e9d407ae68fbbd82, type: 3}
+    prefab: {fileID: 2760589818749178282, guid: 20db27abae54cbc448a18d795d73348f,
+      type: 3}
+  - preview: {fileID: 21300000, guid: 2b22091567f756c4b878944fe3bef3f0, type: 3}
+    prefab: {fileID: 962043758195704786, guid: 8a72bb1b5d46752498f20beef1371ebf, type: 3}
+  - preview: {fileID: 21300000, guid: 0b41076d937d9b94d8cbe13e6b2f5712, type: 3}
+    prefab: {fileID: 9085984406324794073, guid: ad1162162d12b1e45bc6b97a08ea67cf,
+      type: 3}
+  - preview: {fileID: 21300000, guid: 364d73834a0789d4382d6057dcd4d0c7, type: 3}
+    prefab: {fileID: 2164747512361036271, guid: 0474e28a0304f61469851bd47350291f,
+      type: 3}
+  - preview: {fileID: 21300000, guid: e2148575b9b86c840bd8e7c81c8ebab1, type: 3}
+    prefab: {fileID: 8438020623205843029, guid: 78b5cb3cd82113742925cf565d242615,
+      type: 3}
+  - preview: {fileID: 21300000, guid: 7e6ee0a6f10017747bb6c903f9ac7d2a, type: 3}
+    prefab: {fileID: 6620283200220103752, guid: b7ff37aeb3c653f40b6a7aa0114f3bdc,
+      type: 3}
+  - preview: {fileID: 21300000, guid: b2950d93161f43c48a5c19252d0e8499, type: 3}
+    prefab: {fileID: 3296341481916885095, guid: 869319f4bcd485840846fa8e2e6d217e,
+      type: 3}
