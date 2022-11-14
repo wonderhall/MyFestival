@@ -14,9 +14,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MyFestival/Scenes/CreateNewTemp.unity
     guid: 3e76704070a167d4e887689da2f9e69d
-  - enabled: 1
-    path: Assets/MyFestival/Scenes/SignupScene.unity
-    guid: 569272c10266f7342841229a0f18d92c
   m_configObjects:
     AR Foundation RemoteARFoundationRemoteLoaderSettings: {fileID: 11400000, guid: cbad855c47f3bee4e90ce709b6ba4c7a,
       type: 2}
