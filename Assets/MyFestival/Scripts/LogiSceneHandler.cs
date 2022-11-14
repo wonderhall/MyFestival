@@ -20,6 +20,8 @@ public class LogiSceneHandler : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        email_inputField.text = "chanoo";
+        password_InputField.text = "chanoo";
         loginButton.onClick.AddListener(OnClickLogin);
         signupButton.onClick.AddListener(OnClickSignup);
 
@@ -73,11 +75,7 @@ public class LogiSceneHandler : MonoBehaviour
             Toast.Show(json);
             SceneManager.LoadScene("Main");
         })
-        .Catch(err => {
-            var error = err as RequestException;
-            var exception = JsonUtility.FromJson<ServerException>(error.Response);
-            Toast.Show(exception.error);
-        });
+        .Catch(err => Toast.Show(err.Message));
     }
 
     private string decodeToken(string token)

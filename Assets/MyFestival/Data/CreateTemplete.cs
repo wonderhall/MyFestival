@@ -1,9 +1,12 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using UnityEditor;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using RuntimeHandle;
+using System.IO;
 using ARLocation;
 [Serializable]
 public class mTemplete
@@ -21,22 +24,6 @@ public class itemLocation
     public Vector3 position;
     public Vector3 rotation;
     public Vector3 scale;
-}
-[Serializable]
-public class itemsInfo
-{
-    public string itemName;
-    public string iName;
-    public Transform prefab;
-    public Sprite preview;
-    public Vector3 position;
-    public Vector3 rotation;
-    public Vector3 scale;
-}
-[Serializable]
-public class ScriptableObjectTest1
-{
-    public itemsInfo[] items;
 }
 public class CreateTemplete : MonoBehaviour
 {

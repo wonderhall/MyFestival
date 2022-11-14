@@ -54,7 +54,7 @@ public class SignupSceneHandler : MonoBehaviour
             var error = err as RequestException;
             var exception = JsonUtility.FromJson<ServerException>(error.Response);
             Toast.Show(exception.error);
-        });
+            });
     }
 
     public void OnClickLogin()
