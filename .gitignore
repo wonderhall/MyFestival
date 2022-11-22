@@ -10,6 +10,7 @@
 Packages/
 Assets/AssetStoreTools*
 Packages/packages-lock.json
+Assets/CurissVRCTools/
 
 # Visual Studio 2015 cache directory
 /.vs/

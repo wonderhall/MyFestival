@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3074cd2456209c4eb5ae4cec6a89222, type: 3}
+  m_Name: Templete_fireworks
+  m_EditorClassIdentifier: 
+  ItemTemplete:
+  - TemppleteName: Fireworks
+    preview: {fileID: 21300000, guid: 250530b8c009dec4ea74e97aa3f3248f, type: 3}
+    item:
+    - {fileID: 3502311957963735083, guid: 42aee6be3805dc54bbbe598d70d1a3fa, type: 3}
+    - {fileID: 7312250209896695632, guid: 31e17a9a2d62ab84d90718c62392129a, type: 3}
+    - {fileID: 6907564331842699518, guid: cba42e042b69ee147abd4efce23770ed, type: 3}
+    - {fileID: 4299314447486925226, guid: 4d0fdce5667fac1479f4f80bcc7092f7, type: 3}
+    - {fileID: 1983517252960263474, guid: 50fb9cf9224c20c4ab38042784174648, type: 3}
+    - {fileID: 7398031021340348418, guid: 19bdae61883a1604ab120c2954e594b7, type: 3}

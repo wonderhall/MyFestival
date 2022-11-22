@@ -18,10 +18,13 @@ public class Manager : MonoBehaviour
     [Header("경도")]
     public double longitude;
 
-    [Header("현재 선택한 스크립트오브젝트")]
-    public ScriptableObject_CategoryItems scriptableObject;
-    [Header("현재 선택한 오브젝트 이름")]
-    public int SeletedObjectIndex;
+    [Header("현재 선택한 탬플릿 이름")]
+    public string TempName;
+    [Header("현재 선택된 오브젝트 유아이")]
+    public GameObject DeleteUI;
+
+    public bool isShowMyList = false;
+    public bool isShowTemplete = false;
 
     private void Awake()
     {

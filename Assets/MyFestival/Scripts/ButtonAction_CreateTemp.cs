@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class ButtonAction_CreateTemp : MonoBehaviour
@@ -34,10 +35,30 @@ public class ButtonAction_CreateTemp : MonoBehaviour
     public GameObject[] AlarmWindow;
 
     [Header("json리스트")]
-    public Object[] JsonList; 
+    public Object[] JsonList;
 
 
-    // Start is called before the first frame update
+// 로드시 상태체크 후 마이리스트페이지 열기 -->
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
+    }
+    void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Find your player and populate the data like e.g.
+        Debug.Log("ddd");
+        if (Manager.instance.isShowMyList) OpenMyARwindow();
+        if (Manager.instance.isShowTemplete) OpenSelectTemplete();
+
+    }
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        Manager.instance.isShowMyList = false;
+    }
+    //<--
+
     void Start()
     {
 
@@ -55,7 +76,7 @@ public class ButtonAction_CreateTemp : MonoBehaviour
         //메뉴 오른쪽 액션
         bt_ScreenShot.onClick.AddListener(() => StartCoroutine(TakeAndSaveScreenshot()));
         bt_ResetFocus.onClick.AddListener(() => Manager.instance.ResetScene());
-        bt_AddObject.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[4])));
+        bt_AddObject.onClick.AddListener(AddObject);
 
         //하위 확인번트
         bt_YesBackToMain.onClick.AddListener(() => Manager.instance.SceneLoad("Main"));
@@ -65,6 +86,12 @@ public class ButtonAction_CreateTemp : MonoBehaviour
     }
 
     // Update is called once per frame
+    public void AddObject()
+    {
+        StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[4]));
+        if (GameObject.Find("Window_SeleltTemplete"))
+            GameObject.Find("Window_SeleltTemplete").SetActive(false);
+    }
     void MenuOpen()
     {
         _animator = bt_showMenu.transform.parent.GetComponent<Animator>();
@@ -88,17 +115,27 @@ public class ButtonAction_CreateTemp : MonoBehaviour
     void SaveObjectList()
     {
         StartCoroutine(SshotAlarm(AlarmWindow[1]));
-        this.GetComponent<ButtonAction_SelectCategory>().saveTemple();
+        this.GetComponent<ButtonAction_SelectCategory>().OrderToSave();
     }
-    void OpenMyARwindow()
+   public void OpenMyARwindow()
     {
-        //폴더 유뮤 체크
-        if (!Directory.Exists(SaveLoadTemplete.SavePath)) SaveLoadTemplete.newEmptyData();
+        ////폴더 유뮤 체크
+        //if (!Directory.Exists(SaveLoadTemplete.SavePath)) SaveLoadTemplete.newEmptyData();
 
         this.GetComponent<MyARList>().GetJsonWithMyList();
         //Debug.Log("마이에이알리스트창 띄우기");
         StartCoroutine(OpenAfterCloseMenu(changeWindowList[3], changeWindowList[5]));
+        Manager.instance.isShowMyList = false;
     }
+    public void OpenSelectTemplete ()
+    {
+        changeWindowList[6].SetActive(true);
+        changeWindowList[6].transform.GetChild(2).gameObject.SetActive(true);
+        changeWindowList[6].transform.GetChild(3).gameObject.SetActive(false);
+        Debug.Log("selectTemp");
+        Manager.instance.isShowTemplete = false;
+    }
+
     IEnumerator TakeAndSaveScreenshot()
     {
         //Debug.Log("찰칵");
@@ -119,6 +156,7 @@ public class ButtonAction_CreateTemp : MonoBehaviour
 
     IEnumerator SshotAlarm(GameObject alarmWindow)
     {
+        yield return new WaitForSeconds(0.25f);
         alarmWindow.SetActive(true);
         yield return new WaitForSeconds(1.5f);
         alarmWindow.SetActive(false);

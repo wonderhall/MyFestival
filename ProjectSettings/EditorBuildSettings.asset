@@ -5,8 +5,8 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
-    path: Assets/MyFestival/Scenes/Login.unity
+  - enabled: 0
+    path: Assets/MyFestival/Scenes/LoginScene.unity
     guid: 4882ddee9027099409e0c24677c6f06e
   - enabled: 1
     path: Assets/MyFestival/Scenes/Main.unity
@@ -14,6 +14,18 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MyFestival/Scenes/CreateNewTemp.unity
     guid: 3e76704070a167d4e887689da2f9e69d
+  - enabled: 0
+    path: Assets/MyFestival/Temp/ForMakeIcon.unity
+    guid: 9f374daf4d922914db8c109707d7e9e5
+  - enabled: 0
+    path: Assets/MyFestival/Temp/buildTest.unity
+    guid: a6161808e08f0c843af2c3e7e210a2c5
+  - enabled: 0
+    path: Assets/Exercise/scneTransTest 1.unity
+    guid: 86975c746fae48642976244f1fff1664
+  - enabled: 0
+    path: Assets/Exercise/scneTransTest 2.unity
+    guid: e789fe8bb34f88d4fa19ab0ec6a81340
   m_configObjects:
     AR Foundation RemoteARFoundationRemoteLoaderSettings: {fileID: 11400000, guid: cbad855c47f3bee4e90ce709b6ba4c7a,
       type: 2}

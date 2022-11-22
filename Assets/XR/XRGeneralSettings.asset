@@ -56,10 +56,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2dc886499c26824283350fa532d087d, type: 3}
   m_Name: XRGeneralSettings
   m_EditorClassIdentifier: 
-  Keys: 040000000700000001000000
+  Keys: 070000000400000001000000
   Values:
-  - {fileID: -906990648198499217}
   - {fileID: 7212457088268023911}
+  - {fileID: -906990648198499217}
   - {fileID: -9191445716169883995}
 --- !u!114 &1009030276301525555
 MonoBehaviour:

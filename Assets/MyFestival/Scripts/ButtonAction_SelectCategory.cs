@@ -14,8 +14,8 @@ public class ButtonAction_SelectCategory : MonoBehaviour
 {
     [Header("상위창")]
     public GameObject defaultPages;
-    [Header("elementPage")]
-    public GameObject ElementPages;
+    //[Header("elementPage")]
+    //public GameObject ElementPages;
     [Header("하위창")]
     public GameObject[] PagesToChange = new GameObject[6];
     [Header("카테고리선택버튼")]
@@ -24,7 +24,8 @@ public class ButtonAction_SelectCategory : MonoBehaviour
     public Button bt_caterogryExit;
     [Header("사이드 패널")]
     public GameObject[] sidePanel = new GameObject[2];
-
+    [Header("생성될 오브젝트 기본 거리")]
+    public Vector3 distanceFromCamera = new Vector3(0, 0, 3);
 
     //[Header("ui root")]
     //public GameObject contentsRoot;
@@ -36,11 +37,10 @@ public class ButtonAction_SelectCategory : MonoBehaviour
 
     //temp
     private GameObject saveRoot;
-    private int idx = new int();
     private void Awake()
     {
-        //파일이 없으면 오류가 나니 먼저 빈오브젝트 생성
-        if (!Directory.Exists(SaveLoadTemplete.SavePath)) SaveLoadTemplete.newEmptyData();
+        ////파일이 없으면 오류가 나니 먼저 빈오브젝트 생성
+        //if (!Directory.Exists(SaveLoadTemplete.SavePath)) SaveLoadTemplete.newEmptyData();
 
         //페이지 초기 온오프
         foreach (var item in PagesToChange)
@@ -90,8 +90,6 @@ public class ButtonAction_SelectCategory : MonoBehaviour
     //<--
     public void Placeable_ObjectList(int idx, ScriptableObject_CategoryItems scriptableObject)
     {
-        Debug.Log(scriptableObject.name);
-        Debug.Log(PagesToChange[idx].transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).gameObject.name);
         Transform root = PagesToChange[idx].transform.GetChild(2).GetChild(0).GetChild(0).GetChild(0).transform;
 
         if (root.childCount == 0)
@@ -128,18 +126,17 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         //-->선택한 오브젝트 id가져오기
         GameObject tempBtn = EventSystem.current.currentSelectedGameObject;
         string[] split_name = tempBtn.name.Split('_');
-        //string str = split_name[0];//선택한 오브젝트 이름
+        string str = split_name[0];//선택한 오브젝트 이름
         int num = int.Parse(split_name[1]);
 
-        Manager.instance.scriptableObject = scriptableObject;
-        Manager.instance.SeletedObjectIndex = num;
+
         //<--
         //    //템플릿을 저장할 빈오브젝트 saveRoot란 이름으로 생성하고 인스턴스생성 후 부모화
         if (!GameObject.Find("---CurrentItemList---"))
         {
             GameObject rootobj = new GameObject("---CurrentItemList---");
-            Vector3 positionOffset = new Vector3(0, 0, 2);
-            rootobj.transform.position = positionOffset;
+   
+            rootobj.transform.position = distanceFromCamera;
             saveRoot = rootobj;
         }
         else
@@ -147,7 +144,7 @@ public class ButtonAction_SelectCategory : MonoBehaviour
 
 
         Transform newIns = Instantiate(scriptableObject.placeableObjects[num].prefab, saveRoot.transform);
-        newIns.name = tempBtn.name;
+        newIns.name = tempBtn.name + "_" + scriptableObject.name;//
 
         //기즈모 부착
         if (GameObject.FindObjectOfType<RuntimeTransformHandle>())
@@ -160,13 +157,14 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         handler.autoScaleFactor = 1.5f;
     }
 
-    public void saveTemple()
+    public void OrderToSave()
     {
 
         ARLocationProvider aRLocationProvider = GameObject.FindObjectOfType<ARLocationProvider>();
         Manager.instance.latitude = aRLocationProvider.CurrentLocation.latitude;
         Manager.instance.longitude = aRLocationProvider.CurrentLocation.longitude;
         Manager.instance.date = DateTime.Now.ToString("yyyy.MM.dd_hh.mm.ss");
+        Manager.instance.TempName = DateTime.Now.ToString("yyyy.MM.dd_hh.mm.ss");
 
 
         List<Transform> tempList = new List<Transform>();
@@ -191,6 +189,12 @@ public class ButtonAction_SelectCategory : MonoBehaviour
     IEnumerator TakePreview(string fileName)
     {
         foreach (GameObject page in sidePanel) page.SetActive(false); //스샷찍기 전에 가리는거 치우기
+        if (GameObject.Find("handler"))
+        {
+            GameObject handle = GameObject.Find("handler");
+            handle.SetActive(false);
+        }
+
 
         yield return new WaitForSeconds(0.1f);
         yield return new WaitForEndOfFrame();
@@ -204,6 +208,11 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         yield return new WaitForChangedResult();
 
         foreach (GameObject page in sidePanel) page.SetActive(true);//찍고 나서 보이기
+        if (GameObject.Find("handler"))
+        {
+            GameObject handle = GameObject.Find("handler");
+            handle.SetActive(true);
+        }
 
     }
 

@@ -40,15 +40,18 @@ public class ButtonAction : MonoBehaviour
     public GameObject[] changeWindowList;
 
     public bool menuClose = false;
+    private MyARList ml;
     private void Start()
     {
         bt_showMenu.onClick.AddListener(() => MenuOpen());
         bt_hideMenu.onClick.AddListener(() => MenuClose());
         bt_ScreenShot.onClick.AddListener(()=> StartCoroutine(TakeAndSaveScreenshot()));
         bt_Reset.onClick.AddListener(()=> Manager.instance.ResetScene());
-        bt_createNewAR.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[1])));
+        //bt_createNewAR.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[1])));
+        bt_createNewAR.onClick.AddListener(() => StartCoroutine(LoadSceneSelectTemp()));
         bt_ARTempleteList.onClick.AddListener(()=> StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[2])));
-        bt_myARList.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[3])));
+        //bt_myARList.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[3])));
+        bt_myARList.onClick.AddListener(() => StartCoroutine(LoadSceneMyList()));
         bt_noticeBoard.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[4])));
         bt_logOut.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[5])));
         bt_closeTheApp.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[6])));
@@ -119,4 +122,28 @@ public class ButtonAction : MonoBehaviour
         nextWindow.SetActive(true);
 
     }
+
+     IEnumerator LoadSceneMyList()
+    {
+        // Start loading the scene
+        Manager.instance.isShowMyList = true;
+        AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("CreateNewTemp", LoadSceneMode.Single);
+        // Wait until the level finish loading
+        while (!asyncLoadLevel.isDone)
+            yield return null;
+        // Wait a frame so every Awake and Start method is called
+        yield return new WaitForEndOfFrame();
+    }
+    IEnumerator LoadSceneSelectTemp()
+    {
+        // Start loading the scene
+        Manager.instance.isShowTemplete = true;
+        AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("CreateNewTemp", LoadSceneMode.Single);
+        // Wait until the level finish loading
+        while (!asyncLoadLevel.isDone)
+            yield return null;
+        // Wait a frame so every Awake and Start method is called
+        yield return new WaitForEndOfFrame();
+    }
+
 }
