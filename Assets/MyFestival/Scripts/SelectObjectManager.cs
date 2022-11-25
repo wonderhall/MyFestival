@@ -46,12 +46,15 @@ public class SelectObjectManager : MonoBehaviour
             // 광선으로 충돌된 collider를 hit에 넣습니다.
             if (Physics.Raycast(ray, out hit))
             {
-                if (hit.collider.tag == "Player")
+                if (hit.collider.tag == "Player" || hit.collider.tag == "2D" || hit.collider.tag == "Text")
                 {
 
                     curCol = hit.collider;
                     // 어떤 오브젝트인지 로그를 찍습니다.
-                    Debug.Log(hit.collider.name);
+
+                    //ui 온
+                    hit.transform.GetChild(hit.transform.childCount - 1).gameObject.SetActive(true);
+
                     //기즈모 부착
                     if (GameObject.FindObjectOfType<RuntimeTransformHandle>())
                         GameObject.Find("handler").GetComponent<RuntimeTransformHandle>().target = hit.transform;
@@ -61,6 +64,19 @@ public class SelectObjectManager : MonoBehaviour
                     RuntimeTransformHandle handler = GameObject.Find("handler").GetComponent<RuntimeTransformHandle>();
                     handler.autoScale = true;
                     handler.autoScaleFactor = 1.5f;
+
+                    //히트한 오브젝트 타입에 따라 다른 aix변경
+                    if (hit.collider.tag == "2D"|| hit.collider.tag == "Text")
+                    {
+                        handler.axes = HandleAxes.XY;
+                        handler.space = HandleSpace.WORLD;
+                    }
+                    else
+                    {
+                        handler.axes = HandleAxes.XYZ;
+                        handler.space = HandleSpace.LOCAL;
+                    }
+                    Debug.Log("히트한 태그는 = "+hit.collider.tag);
 
 
                     //더블클릭 구현
@@ -73,16 +89,21 @@ public class SelectObjectManager : MonoBehaviour
                     {
                         m_IsOneClick = false;
 
-                        //ui 온
-                        Debug.Log(hit.transform.GetChild(hit.transform.childCount - 1).gameObject.name);
-                        hit.transform.GetChild(hit.transform.childCount - 1).gameObject.SetActive(true);
+
 
                         //기즈모 변경
                         if (curCol = hit.collider)
                         {
+                            if(num > 1&& hit.collider.tag == "Text")
+                            {
+                                RuntimeHandle.RuntimeTransformHandle.Destroy(GameObject.Find("handler"));
+                                hit.collider.GetComponent<Banner>().WaitTyping();
+                            }
                             if (num > 2) num = 0;
                             else num++;
- 
+                            if (num == 1 && hit.collider.tag == "2D") num = 2;
+                            if (num == 1 && hit.collider.tag == "Text") num = 2;
+
                             switch (num)
                             {
                                 case 0:
@@ -90,6 +111,7 @@ public class SelectObjectManager : MonoBehaviour
                                     break;
                                 case 1:
                                     handler.type = HandleType.ROTATION;
+                                    handler.space = HandleSpace.LOCAL;
                                     break;
                                 case 2:
                                     handler.type = HandleType.SCALE;

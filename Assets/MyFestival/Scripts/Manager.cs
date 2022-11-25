@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using UnityEngine.XR.ARFoundation;
+
 
 public class Manager : MonoBehaviour
 {
@@ -46,5 +45,9 @@ public class Manager : MonoBehaviour
         SceneLoad(scene.name);
     }
 
- 
+    public void ArReset()
+    {
+        ARSession session = GameObject.Find("AR Session").GetComponent<ARSession>();
+        session.Reset();
+    }
 }

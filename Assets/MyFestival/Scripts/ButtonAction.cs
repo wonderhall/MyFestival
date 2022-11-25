@@ -41,12 +41,17 @@ public class ButtonAction : MonoBehaviour
 
     public bool menuClose = false;
     private MyARList ml;
+
+    private void OnEnable()
+    {
+        MenuOpen();
+    }
     private void Start()
     {
         bt_showMenu.onClick.AddListener(() => MenuOpen());
         bt_hideMenu.onClick.AddListener(() => MenuClose());
         bt_ScreenShot.onClick.AddListener(()=> StartCoroutine(TakeAndSaveScreenshot()));
-        bt_Reset.onClick.AddListener(()=> Manager.instance.ResetScene());
+        bt_Reset.onClick.AddListener(Manager.instance.ArReset);
         //bt_createNewAR.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[1])));
         bt_createNewAR.onClick.AddListener(() => StartCoroutine(LoadSceneSelectTemp()));
         bt_ARTempleteList.onClick.AddListener(()=> StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[2])));
@@ -56,7 +61,7 @@ public class ButtonAction : MonoBehaviour
         bt_logOut.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[5])));
         bt_closeTheApp.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[6])));
 
-        bt_LogOutSub.onClick.AddListener(() => Manager.instance.SceneLoad("Login"));
+        bt_LogOutSub.onClick.AddListener(() => Manager.instance.SceneLoad("LoginScene"));
         bt_closetheAppSub.onClick.AddListener(()=>Application.Quit());
         bt_CreateNewTemplete.onClick.AddListener(()=>Manager.instance.SceneLoad("CreateNewTemp"));
 

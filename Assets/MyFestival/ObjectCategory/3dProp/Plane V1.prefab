@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reverse: 0
+  autoScaleFactor: 2
 --- !u!1 &6553026795244255358
 GameObject:
   m_ObjectHideFlags: 0
@@ -5316,6 +5317,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Moving: 0
+  target: {fileID: 0}
+  ps: {fileID: 0}
+  pathCreator: {fileID: 0}
+  end: 0
+  dstTravelled: 0
+  speed: 5
 --- !u!65 &2923265714226233759
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5351,8 +5358,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8438020623397623397}
-  - component: {fileID: 8438020623397623402}
-  - component: {fileID: 3053342213745086853}
   m_Layer: 0
   m_Name: Gizmo
   m_TagString: Untagged
@@ -5377,34 +5382,6 @@ Transform:
   m_Father: {fileID: 8438020623205843029}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8438020623397623402
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8438020623397623403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33aabe1a2dec93349b06e6e5dc51bc06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathCreator: {fileID: 8438020623182821414}
-  endOfPathInstruction: 0
-  speed: 5
---- !u!114 &3053342213745086853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8438020623397623403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 82dcccfe53d77e749a6aa3fc75755777, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Moving: 0
 --- !u!1 &8438020623604225390
 GameObject:
   m_ObjectHideFlags: 0

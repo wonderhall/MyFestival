@@ -80,7 +80,7 @@ public class MyARList : MonoBehaviour
             }
         }//if종료
         else Debug.Log("이미만들어져있다");
-      
+
     }
     //리스트 정보창_ 작성 및 열기
     IEnumerator ShowSelectedTempleInfo(Text menutext, string name, Dictionary<string, CurrentTemplete> dic)
@@ -151,7 +151,7 @@ public class MyARList : MonoBehaviour
     {
         fromToPage(SelectedTempletePage[1], SelectedTempletePage[2]);
         Button yes = GameObject.Find("Button_Yes").GetComponent<Button>();
-        yes.onClick.AddListener(() => deleteTempFromList(name,page,selectedObject));
+        yes.onClick.AddListener(() => deleteTempFromList(name, page, selectedObject));
         Button no = GameObject.Find("Button_No").GetComponent<Button>();
         no.onClick.AddListener(() => fromToPage(SelectedTempletePage[2], SelectedTempletePage[1]));
     }
@@ -160,7 +160,7 @@ public class MyARList : MonoBehaviour
         //우선 이미지부터 삭제
         CurrentTemplete ct = new CurrentTemplete();
         DicMyTemp.TryGetValue(name, out ct);
-              string savepriviewPath = SaveLoadTemplete.SavePath + ct.date + ".png";
+        string savepriviewPath = SaveLoadTemplete.SavePath + ct.date + ".png";
         File.Delete(savepriviewPath);
 
         //딕에서 삭제
@@ -174,7 +174,7 @@ public class MyARList : MonoBehaviour
         Destroy(selectedObject);
 
 
-        SaveLoadTemplete.SaveTemplete(newTemp,page);
+        SaveLoadTemplete.SaveTemplete(newTemp, page);
     }
     //템플릿 정보창-프리뷰 만들기
     Sprite PreviewTextrueLoad(string name)
@@ -263,13 +263,13 @@ public class MyARList : MonoBehaviour
     }
     #endregion
 
-   public void Publish(/*CurrentTemplete curtemp*/)
+    public void Publish(/*CurrentTemplete curtemp*/)
     {
         Text currentTempName = GameObject.Find("Text_TempName").GetComponent<Text>();
 
         CurrentTemplete curTemp = new CurrentTemplete();
         DicMyTemp.TryGetValue(currentTempName.text, out curTemp);
-   
+
         string saveFileName = "PublishTemplete";
         string saveFilePath = SaveLoadTemplete.SavePath + saveFileName + ".json";
         //
@@ -277,8 +277,8 @@ public class MyARList : MonoBehaviour
         Dictionary<string, CurrentTemplete> dic = SaveLoadTemplete.DicByJson(saveFilePath);//제이슨을 읽어서 딕셔너리화
 
         CurrentTemplete ct;
-        ct=CompairName(curTemp, dic);//이름이 겹치지 않는지 체크
-        if (ct.tempeteName!=null)
+        ct = CompairName(curTemp, dic);//이름이 겹치지 않는지 체크
+        if (ct.tempeteName != null)
         {
             SelectedTempletePage[1].SetActive(false);
             SelectedTempletePage[3].SetActive(true);
@@ -335,6 +335,7 @@ public class MyARList : MonoBehaviour
                         newObject = Instantiate(CgItem.placeableObjects[i].prefab, root.transform).gameObject;
                         //newObject.name = CgItem.placeableObjects[i].prefab.name;
                         newObject.name = item.ItemName;
+
                     }
                 }
             }//so리트스와 아이템 이름 비교해서 생성해준다.
@@ -359,6 +360,9 @@ public class MyARList : MonoBehaviour
             newObject.transform.localScale = nScale;
             #endregion
 
+            if (newObject.tag == "Text")
+                newObject.GetComponent<Banner>().text.text = item.TextName;
+
             //}
             //페이지닫기
 
@@ -367,7 +371,8 @@ public class MyARList : MonoBehaviour
         SelectedTempletePage[1].SetActive(false);
         for (int i = 0; i < root.transform.childCount; i++)
         {
-            root.transform.GetChild(i).GetComponent<MoveController>().Moving = true;
+            if (root.transform.GetChild(i).GetComponent<MoveController>())
+                root.transform.GetChild(i).GetComponent<MoveController>().Moving = true;
         }
     }
 
@@ -380,7 +385,7 @@ public class MyARList : MonoBehaviour
 
     CurrentTemplete CompairName(CurrentTemplete _new, Dictionary<string, CurrentTemplete> _old)
     {
-          foreach (var item in _old)
+        foreach (var item in _old)
         {
             if (_new.tempeteName == item.Key)
                 _new = new CurrentTemplete();

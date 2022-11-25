@@ -12,4 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c05e20d1910e3f34fa228929d5f97fbc, type: 3}
   m_Name: Text
   m_EditorClassIdentifier: 
-  placeableObjects: []
+  placeableObjects:
+  - preview: {fileID: 21300000, guid: 2ea2ae788da8ea445bb06489755ff01e, type: 3}
+    prefab: {fileID: 1368789114995941869, guid: 22922f8fd6ffb194fb22d985b48e4a57,
+      type: 3}

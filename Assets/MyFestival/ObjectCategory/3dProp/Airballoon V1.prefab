@@ -142,7 +142,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8492957013094156523}
-  - component: {fileID: 1932510505458332334}
   m_Layer: 0
   m_Name: Gizmo
   m_TagString: Untagged
@@ -165,21 +164,6 @@ Transform:
   m_Father: {fileID: 4992961032837222977}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
---- !u!114 &1932510505458332334
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 870626979260909829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33aabe1a2dec93349b06e6e5dc51bc06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathCreator: {fileID: 3383126120884892656}
-  endOfPathInstruction: 1
-  speed: 0.5
 --- !u!1 &2577582727297666031
 GameObject:
   m_ObjectHideFlags: 0
@@ -231,7 +215,7 @@ MonoBehaviour:
       - {x: 0, y: 0.6, z: 0}
       - {x: 0, y: 0.5, z: 0}
       isClosed: 0
-      space: 1
+      space: 0
       controlMode: 0
       autoControlLength: 0.3
       boundsUpToDate: 0
@@ -388,6 +372,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reverse: 0
+  autoScaleFactor: 2
 --- !u!1 &4992961032837223039
 GameObject:
   m_ObjectHideFlags: 0
@@ -437,6 +422,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Moving: 0
+  target: {fileID: 0}
+  ps: {fileID: 0}
+  pathCreator: {fileID: 0}
+  end: 1
+  dstTravelled: 0
+  speed: 0.25
 --- !u!65 &1359739335952587204
 BoxCollider:
   m_ObjectHideFlags: 0

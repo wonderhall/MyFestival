@@ -155,6 +155,19 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         RuntimeTransformHandle handler = GameObject.Find("handler").GetComponent<RuntimeTransformHandle>();
         handler.autoScale = true;
         handler.autoScaleFactor = 1.5f;
+
+        //오브젝트타입에 따라 다른 기즈모
+        if (newIns.tag == "2D" || newIns.tag == "Text")
+        {
+            handler.axes = HandleAxes.XY;
+            handler.space = HandleSpace.WORLD;
+        }
+        else
+        {
+            handler.axes = HandleAxes.XYZ;
+            handler.space = HandleSpace.LOCAL;
+        }
+
     }
 
     public void OrderToSave()

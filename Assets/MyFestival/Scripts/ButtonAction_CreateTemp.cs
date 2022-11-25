@@ -1,9 +1,9 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.IO;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.XR.ARFoundation;
+
 
 public class ButtonAction_CreateTemp : MonoBehaviour
 {
@@ -21,8 +21,10 @@ public class ButtonAction_CreateTemp : MonoBehaviour
 
     [Header("오른쪽사이드바 버튼들")]
     public Button bt_ScreenShot;
-    public Button bt_ResetFocus;
     public Button bt_AddObject;
+    public Button bt_itemMove_Play;
+    public Button bt_itemMove_Stop;
+    public Button bt_ArReset;
 
     [Header("하위 확인 버튼")]
     public Button bt_YesBackToMain;
@@ -34,20 +36,16 @@ public class ButtonAction_CreateTemp : MonoBehaviour
     [Header("알람창")]
     public GameObject[] AlarmWindow;
 
-    [Header("json리스트")]
-    public Object[] JsonList;
-
-
-// 로드시 상태체크 후 마이리스트페이지 열기 -->
+    // 로드시 상태체크 후 마이리스트페이지 열기 -->
     private void OnEnable()
     {
+
         SceneManager.sceneLoaded += OnSceneLoaded;
 
     }
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         // Find your player and populate the data like e.g.
-        Debug.Log("ddd");
         if (Manager.instance.isShowMyList) OpenMyARwindow();
         if (Manager.instance.isShowTemplete) OpenSelectTemplete();
 
@@ -61,22 +59,24 @@ public class ButtonAction_CreateTemp : MonoBehaviour
 
     void Start()
     {
-
-            //메뉴온오프액션
-            bt_showMenu.onClick.AddListener(() => MenuOpen());
+        ItemMoveOn();
+        //메뉴온오프액션
+        bt_showMenu.onClick.AddListener(() => MenuOpen());
         bt_hideMenu.onClick.AddListener(() => MenuClose());
         //메뉴외쪽액션
         bt_BackToMain.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[1])));
         bt_ResetFirst.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[2])));
         bt_Save.onClick.AddListener(SaveObjectList);
-        bt_MyArList.onClick.AddListener(()=>StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[3])));
+        bt_MyArList.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[3])));
         //bt_SaveAsCopy.onClick.AddListener(() =>);
         //bt_MyArList.onClick.AddListener(() =>);
 
         //메뉴 오른쪽 액션
         bt_ScreenShot.onClick.AddListener(() => StartCoroutine(TakeAndSaveScreenshot()));
-        bt_ResetFocus.onClick.AddListener(() => Manager.instance.ResetScene());
         bt_AddObject.onClick.AddListener(AddObject);
+        bt_itemMove_Play.onClick.AddListener(ItemMoveOn);
+        bt_itemMove_Stop.onClick.AddListener(ItemMoveOn);
+        bt_ArReset.onClick.AddListener(Manager.instance.ArReset);
 
         //하위 확인번트
         bt_YesBackToMain.onClick.AddListener(() => Manager.instance.SceneLoad("Main"));
@@ -85,6 +85,42 @@ public class ButtonAction_CreateTemp : MonoBehaviour
 
     }
 
+
+
+    void ItemMoveOn()
+    {
+        bt_itemMove_Play.gameObject.SetActive(!bt_itemMove_Play.gameObject.activeSelf);
+        bt_itemMove_Stop.gameObject.SetActive(!bt_itemMove_Stop.gameObject.activeSelf);
+
+        if (!bt_itemMove_Play.gameObject.activeSelf)
+        {
+            Debug.Log("켜");
+            //GameObject.Find("---CurrentItemList---").
+            if (GameObject.Find("---CurrentItemList---"))
+            {
+                for (int i = 0; i < GameObject.Find("---CurrentItemList---").transform.childCount; i++)
+                {
+                    if (GameObject.Find("---CurrentItemList---").transform.GetChild(i).GetComponent<MoveController>())
+                        GameObject.Find("---CurrentItemList---").transform.GetChild(i).GetComponent<MoveController>().Moving = true;
+                }
+            }
+
+        }
+        else
+        {
+            Debug.Log("꺼");
+            if (GameObject.Find("---CurrentItemList---"))
+            {
+                for (int i = 0; i < GameObject.Find("---CurrentItemList---").transform.childCount; i++)
+                {
+                    if (GameObject.Find("---CurrentItemList---").transform.GetChild(i).GetComponent<MoveController>())
+                        GameObject.Find("---CurrentItemList---").transform.GetChild(i).GetComponent<MoveController>().Moving = false;
+                }
+            }
+        }
+
+
+    }
     // Update is called once per frame
     public void AddObject()
     {
@@ -117,7 +153,7 @@ public class ButtonAction_CreateTemp : MonoBehaviour
         StartCoroutine(SshotAlarm(AlarmWindow[1]));
         this.GetComponent<ButtonAction_SelectCategory>().OrderToSave();
     }
-   public void OpenMyARwindow()
+    public void OpenMyARwindow()
     {
         ////폴더 유뮤 체크
         //if (!Directory.Exists(SaveLoadTemplete.SavePath)) SaveLoadTemplete.newEmptyData();
@@ -127,7 +163,7 @@ public class ButtonAction_CreateTemp : MonoBehaviour
         StartCoroutine(OpenAfterCloseMenu(changeWindowList[3], changeWindowList[5]));
         Manager.instance.isShowMyList = false;
     }
-    public void OpenSelectTemplete ()
+    public void OpenSelectTemplete()
     {
         changeWindowList[6].SetActive(true);
         changeWindowList[6].transform.GetChild(2).gameObject.SetActive(true);

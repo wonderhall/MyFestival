@@ -4949,6 +4949,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reverse: 0
+  autoScaleFactor: 2
 --- !u!1 &4411798166090734298
 GameObject:
   m_ObjectHideFlags: 0
@@ -4997,6 +4998,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Moving: 0
+  target: {fileID: 0}
+  ps: {fileID: 0}
+  pathCreator: {fileID: 0}
+  end: 0
+  dstTravelled: 0
+  speed: 5
 --- !u!65 &142992305233568499
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -10216,15 +10223,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 56e69b96df88bc746a8901cfae794dd7, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7a792eb95a72408468cead5706ab6fc9, type: 3}
---- !u!4 &8841420199550362915 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7a792eb95a72408468cead5706ab6fc9,
-    type: 3}
-  m_PrefabInstance: {fileID: 9023438691956474568}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8212551962539458457 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7a792eb95a72408468cead5706ab6fc9,
+    type: 3}
+  m_PrefabInstance: {fileID: 9023438691956474568}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8841420199550362915 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7a792eb95a72408468cead5706ab6fc9,
     type: 3}
   m_PrefabInstance: {fileID: 9023438691956474568}
   m_PrefabAsset: {fileID: 0}
@@ -10247,18 +10254,3 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &5057821255473617754
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8212551962539458457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33aabe1a2dec93349b06e6e5dc51bc06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathCreator: {fileID: 2036125240638246714}
-  endOfPathInstruction: 0
-  speed: 5

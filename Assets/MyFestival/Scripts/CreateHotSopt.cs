@@ -81,8 +81,9 @@ public class CreateHotSopt : MonoBehaviour
                             if (str == CgItem.placeableObjects[i].prefab.name)//읽어온 아아템이름과 스크랩터블오브젝트 아이템을 비교
                             {
                                 Debug.Log(CgItem.placeableObjects[i].prefab.name);
-                                newObject = Instantiate(CgItem.placeableObjects[i].prefab,HsObject.transform).gameObject;
-                                newObject.GetComponent<MoveController>().Moving = true;
+                                newObject = Instantiate(CgItem.placeableObjects[i].prefab, HsObject.transform).gameObject;
+                                if (newObject.GetComponent<MoveController>())
+                                    newObject.GetComponent<MoveController>().Moving = true;
                                 newObject.transform.GetChild(newObject.transform.childCount - 1).gameObject.SetActive(false);
                                 //newObject.name = CgItem.placeableObjects[i].prefab.name;
                                 newObject.name = item.ItemName;
@@ -100,7 +101,7 @@ public class CreateHotSopt : MonoBehaviour
                             nSca[i] = itemV.itemScale[i];
                         }
                     }
-                    Vector3 nPosition = new Vector3(nPo[0], nPo[1], nPo[2]);
+                    Vector3 nPosition = new Vector3(nPo[0], nPo[1], nPo[2]+3);
                     Vector3 nRotation = new Vector3(nRot[0], nRot[1], nRot[2]);
                     Vector3 nScale = new Vector3(nSca[0], nSca[1], nSca[2]);
 
@@ -111,6 +112,6 @@ public class CreateHotSopt : MonoBehaviour
             }//so리트스와 아이템 이름 비교해서 생성해준다.
         }//if닫기
     }//onEnable닫기
-   
+
 }
 

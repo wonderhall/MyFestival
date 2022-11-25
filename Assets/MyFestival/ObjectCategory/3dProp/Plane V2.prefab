@@ -49,6 +49,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Moving: 0
+  target: {fileID: 0}
+  ps: {fileID: 0}
+  pathCreator: {fileID: 0}
+  end: 0
+  dstTravelled: 0
+  speed: 5
 --- !u!65 &1658134896988557652
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -226,6 +232,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reverse: 0
+  autoScaleFactor: 2
 --- !u!1 &5589298188586862810
 GameObject:
   m_ObjectHideFlags: 0
@@ -10055,7 +10062,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7561774875453127072}
-  - component: {fileID: 8096820004284632297}
   m_Layer: 0
   m_Name: Gizmo
   m_TagString: Untagged
@@ -10080,21 +10086,6 @@ Transform:
   m_Father: {fileID: 6620283200220103752}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8096820004284632297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7975459703629929866}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33aabe1a2dec93349b06e6e5dc51bc06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathCreator: {fileID: 782279064753106830}
-  endOfPathInstruction: 0
-  speed: 5
 --- !u!1 &8687919433085347089
 GameObject:
   m_ObjectHideFlags: 0
@@ -10349,15 +10340,15 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 4ba931ddbb7374944b34c1266147b871, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8d6269d887078cb4da17dbc21c3a1a2f, type: 3}
---- !u!4 &3311494596435337955 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d6269d887078cb4da17dbc21c3a1a2f,
-    type: 3}
-  m_PrefabInstance: {fileID: 3062012027122353416}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &2791979322646673497 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8d6269d887078cb4da17dbc21c3a1a2f,
+    type: 3}
+  m_PrefabInstance: {fileID: 3062012027122353416}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &3311494596435337955 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 8d6269d887078cb4da17dbc21c3a1a2f,
     type: 3}
   m_PrefabInstance: {fileID: 3062012027122353416}
   m_PrefabAsset: {fileID: 0}

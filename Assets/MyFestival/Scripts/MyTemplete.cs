@@ -58,6 +58,7 @@ public class CurItemList
 {
     public int Index;
     public string ItemName;
+    public string TextName;
     public List<ItemTransform> itemTranform= new List<ItemTransform>();
 }
 [Serializable]
@@ -66,7 +67,6 @@ public class ItemTransform
     public float[] itemPositon;
     public float[] itemRotate;
     public float[] itemScale;
-
     public ItemTransform(/*ItemPositon po, ItemRotate rot, ItemScale scale*/)
     {
         itemPositon = new float[3];

@@ -36,6 +36,7 @@ public static class SaveLoadTemplete
         curTem.latitude = Manager.instance.latitude;
         curTem.longitude = Manager.instance.longitude;
 
+
         for (int i = 0; i < GetItemList.Count; i++)
         {
 
@@ -45,13 +46,17 @@ public static class SaveLoadTemplete
             string[] tempname = GetItemList[i].name.Split('_');
             NewItem.Index = int.Parse(tempname[1]);
             NewItem.ItemName = GetItemList[i].name;
+            //text 템플릿 추가
+            if (GetItemList[i].tag == "Text")
+                NewItem.TextName = GetItemList[i].GetComponent<Banner>().text.text;
+            //
             newItemTransform.itemPositon[0] = GetItemList[i].localPosition.x;
             newItemTransform.itemPositon[1] = GetItemList[i].localPosition.y;
             newItemTransform.itemPositon[2] = GetItemList[i].localPosition.z;
 
-            newItemTransform.itemRotate[0] = GetItemList[i].localRotation.x;
-            newItemTransform.itemRotate[1] = GetItemList[i].localRotation.y;
-            newItemTransform.itemRotate[2] = GetItemList[i].localRotation.z;
+            newItemTransform.itemRotate[0] = GetItemList[i].localEulerAngles.x;
+            newItemTransform.itemRotate[1] = GetItemList[i].localEulerAngles.y;
+            newItemTransform.itemRotate[2] = GetItemList[i].localEulerAngles.z;
 
             newItemTransform.itemScale[0] = GetItemList[i].localScale.x;
             newItemTransform.itemScale[1] = GetItemList[i].localScale.y;
@@ -74,13 +79,13 @@ public static class SaveLoadTemplete
         //
 
         Dictionary<string, CurrentTemplete> allTemplete = DicByJson(saveFilePath);//제이슨을 읽어서 딕셔너리화
-         allTemplete.Add(curTem.tempeteName, curTem);//딕셔너리에 현재 만든 템플릿 더하기
+        allTemplete.Add(curTem.tempeteName, curTem);//딕셔너리에 현재 만든 템플릿 더하기
         //<---
 
         //}
         MyTemplete NewMyTemplete = new MyTemplete();
         foreach (var item in allTemplete) NewMyTemplete.myTemplete.Add(item.Value);//저장을 위해 새로 템플릿을 만들고 딕셔너리를  넣어줌.
-                                                                                   
+
         #region  before
         //string toJson = JsonConvert.SerializeObject(NewMyTemplete);
         //Byte[] data2 = Encoding.UTF8.GetBytes(toJson);
@@ -114,10 +119,10 @@ public static class SaveLoadTemplete
     /// 현재 탬플릿을 서버에 올린다.일단 로칼로 만들지만 이후 서버로 변경
     /// </summary>
     /// <param name="publishTemplete"></param>
-    public static void SaveTempleteToShop(CurrentTemplete publishTemplete, GameObject page,string saveFilePath)
+    public static void SaveTempleteToShop(CurrentTemplete publishTemplete, GameObject page, string saveFilePath)
     {
         page.SetActive(false);
- 
+
         //
 
         #region before
@@ -214,7 +219,7 @@ public static class SaveLoadTemplete
         MyTemplete DeserialJson = JsonConvert.DeserializeObject<MyTemplete>(fromJson);//제이슨으로부터 템플릿모음 클래스생성
         return DeserialJson;
     }
-    public static void TempleteWriteToJson(MyTemplete Templete,string path)
+    public static void TempleteWriteToJson(MyTemplete Templete, string path)
     {
         string toJson = JsonConvert.SerializeObject(Templete);
         Byte[] data2 = Encoding.UTF8.GetBytes(toJson);

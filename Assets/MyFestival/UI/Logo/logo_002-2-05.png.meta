@@ -1,7 +1,10 @@
 fileFormatVersion: 2
 guid: d5727a3e21fafe14ea93d0aa2fc48661
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 6928783186426381192
+    second: logo_002-2-05_1
   externalObjects: {}
   serializedVersion: 11
   mipmaps:
@@ -101,7 +104,28 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: logo_002-2-05_1
+      rect:
+        serializedVersion: 2
+        x: 1021
+        y: 560
+        width: 1276
+        height: 556
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 883c4a8099bf72060800000000000000
+      internalID: 6928783186426381192
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []

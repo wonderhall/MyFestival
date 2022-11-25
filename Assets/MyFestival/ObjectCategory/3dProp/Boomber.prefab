@@ -4911,6 +4911,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Moving: 0
+  target: {fileID: 0}
+  ps: {fileID: 0}
+  pathCreator: {fileID: 0}
+  end: 0
+  dstTravelled: 0
+  speed: 5
 --- !u!65 &8402771285885431063
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4933,7 +4939,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2231167049616847970}
-  - component: {fileID: 2231167049616847971}
   m_Layer: 0
   m_Name: BooberGizmo
   m_TagString: Untagged
@@ -4958,21 +4963,6 @@ Transform:
   m_Father: {fileID: 2231167048648246856}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2231167049616847971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2231167049616847965}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33aabe1a2dec93349b06e6e5dc51bc06, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pathCreator: {fileID: 2231167050422207045}
-  endOfPathInstruction: 0
-  speed: 5
 --- !u!1 &2231167049662274071
 GameObject:
   m_ObjectHideFlags: 0
@@ -9987,6 +9977,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reverse: 0
+  autoScaleFactor: 2
 --- !u!1 &5288956205743417315
 GameObject:
   m_ObjectHideFlags: 0
