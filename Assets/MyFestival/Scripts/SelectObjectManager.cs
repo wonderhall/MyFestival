@@ -69,7 +69,7 @@ public class SelectObjectManager : MonoBehaviour
                     if (hit.collider.tag == "2D"|| hit.collider.tag == "Text")
                     {
                         handler.axes = HandleAxes.XY;
-                        handler.space = HandleSpace.WORLD;
+                        //handler.space = HandleSpace.WORLD;
                     }
                     else
                     {

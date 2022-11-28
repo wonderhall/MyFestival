@@ -160,7 +160,7 @@ public class ButtonAction_SelectCategory : MonoBehaviour
         if (newIns.tag == "2D" || newIns.tag == "Text")
         {
             handler.axes = HandleAxes.XY;
-            handler.space = HandleSpace.WORLD;
+            //handler.space = HandleSpace.WORLD;
         }
         else
         {

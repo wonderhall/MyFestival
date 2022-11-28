@@ -43,6 +43,8 @@ public class CreateHotSopt : MonoBehaviour
 
     private CurrentTemplete[] ct;
 
+    public float defaultHeight;
+    public float defaultDistance;
 
     private void OnEnable()
     {
@@ -101,7 +103,7 @@ public class CreateHotSopt : MonoBehaviour
                             nSca[i] = itemV.itemScale[i];
                         }
                     }
-                    Vector3 nPosition = new Vector3(nPo[0], nPo[1], nPo[2]+3);
+                    Vector3 nPosition = new Vector3(nPo[0], nPo[1]+ defaultHeight, nPo[2]+defaultDistance);
                     Vector3 nRotation = new Vector3(nRot[0], nRot[1], nRot[2]);
                     Vector3 nScale = new Vector3(nSca[0], nSca[1], nSca[2]);
 
