@@ -10,6 +10,8 @@ public class Banner : MonoBehaviour
     //public InputField mainInputField;
     public TMP_InputField mainInputField;
     public TMP_Text text;
+    public float blinkTime = 2f;
+    private float t;
 
     void Start()
     {
@@ -22,6 +24,21 @@ public class Banner : MonoBehaviour
     {
         transform.LookAt(cam);
         transform.forward = -transform.forward;
+
+       
+        t += Time.deltaTime;
+        if (t > blinkTime)
+        {
+            StartCoroutine(blinkText(text.gameObject));
+            t = 0;
+        }
+    }
+
+    IEnumerator blinkText(GameObject obj)
+    {
+        obj.SetActive(false);
+        yield return new WaitForSeconds(0.2f);
+        obj.SetActive(true);
     }
     public void WaitTyping()
     {

@@ -16,3 +16,12 @@ MonoBehaviour:
   - preview: {fileID: 21300000, guid: 2ea2ae788da8ea445bb06489755ff01e, type: 3}
     prefab: {fileID: 1368789114995941869, guid: 22922f8fd6ffb194fb22d985b48e4a57,
       type: 3}
+  - preview: {fileID: 21300000, guid: db6ee722fa79ba745a63a581ad96240c, type: 3}
+    prefab: {fileID: 4946289380101188974, guid: ceede96e90166c947a4ca92627d98e3e,
+      type: 3}
+  - preview: {fileID: 21300000, guid: 0c0b0e09f7b9ffc4480c791932bf9dbc, type: 3}
+    prefab: {fileID: 1540019530671573593, guid: 10317fff0756b684999a8ba692844eb2,
+      type: 3}
+  - preview: {fileID: 21300000, guid: 5421ed665b4cd7f41bb7382f34d289a8, type: 3}
+    prefab: {fileID: 6021795124349685298, guid: 61faec315ac876a42a21aff8a3a752d1,
+      type: 3}

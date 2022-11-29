@@ -98,6 +98,7 @@ public class SelectObjectManager : MonoBehaviour
                             {
                                 RuntimeHandle.RuntimeTransformHandle.Destroy(GameObject.Find("handler"));
                                 hit.collider.GetComponent<Banner>().WaitTyping();
+                                num = 0;
                             }
                             if (num > 2) num = 0;
                             else num++;

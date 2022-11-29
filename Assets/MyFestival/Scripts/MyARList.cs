@@ -25,14 +25,19 @@ public class MyARList : MonoBehaviour
     [Header("생성될 오브젝트 기본 거리")]
     public Vector3 distanceFromCamera = new Vector3(0, 0, 3);
 
+    [Header("delete Yes")]
+    public GameObject Bt_Yes;//같은 버튼에 리바인딩하면서 콜이 쌓이는 문제로 새로생성하고 바인딩하는 것으로 해결.
+    [Header("button renamer")]
+    public Button Bt_renamer;
+
     private Dictionary<string, CurrentTemplete> DicMyTemp;
 
     private Text _tempNname;
 
     private CurItemList[] ct;
 
-    private Button renamer;
     private InputField inputField;
+    private string tempName;
 
     public void GetJsonWithMyList()//마이리스트창을 열면서 전에 만들어 놓은 오브젝트 삭제
     {        //패스
@@ -85,9 +90,12 @@ public class MyARList : MonoBehaviour
     //리스트 정보창_ 작성 및 열기
     IEnumerator ShowSelectedTempleInfo(Text menutext, string name, Dictionary<string, CurrentTemplete> dic)
     {
+        Debug.Log("ShowSelectedTempleInfo");
         SelectedTempletePage[0].SetActive(false);//해당페이지 오픈
         SelectedTempletePage[1].SetActive(true);//해당페이지 오픈
-        yield return new WaitForSeconds(0.1f);
+        //yield return new WaitForSeconds(0.1f);
+        yield return new WaitUntil(()=>valuedChanged(name));
+        Debug.Log(name);
         GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
 
         CurrentTemplete thisTempleteInfo = new CurrentTemplete();
@@ -100,10 +108,23 @@ public class MyARList : MonoBehaviour
         double longitude = thisTempleteInfo.longitude;
 
         ct = thisTempleteInfo.items.ToArray();
-        //List<CurItemList> curItems = thisTempleteInfo.items;
 
 
+        //이름 바꾸기
+        #region before 리바인딩 오류
+        //renamer = GameObject.Find("Bt_Renamer").GetComponent<Button>();
+        //inputField = renamer.transform.GetComponentInChildren<InputField>();
+        //renamer.onClick.AddListener(delegate { ShowRenameEditor(menutext, _tempNname.text, renamer.transform, thisTempleteInfo, name); }); 
+        #endregion
 
+        if (GameObject.Find("Bt_Renamer")) Destroy(GameObject.Find("Bt_Renamer"));
+        Transform RootButton = GameObject.Find("Preview").transform;
+        Button renamer = Instantiate(Bt_renamer, RootButton).GetComponent<Button>();
+        renamer.name = "Bt_Renamer";
+        inputField = renamer.transform.GetComponentInChildren<InputField>();
+        renamer.onClick.AddListener(delegate { ShowRenameEditor(menutext, _tempNname.text, renamer.transform, thisTempleteInfo, name); });
+
+        yield return new WaitForEndOfFrame();
 
         ////정보넣기
         GameObject icon = GameObject.Find("IconText");
@@ -122,15 +143,13 @@ public class MyARList : MonoBehaviour
         GameObject previewSmall = GameObject.Find("PreviewSmall");
         previewSmall.GetComponent<Image>().sprite = PreviewTextrueLoad(previewName); //프리뷰
 
-        //이름 바꾸기
-        renamer = GameObject.Find("Bt_Renamer").GetComponent<Button>();
-        inputField = renamer.transform.GetComponentInChildren<InputField>();
-        renamer.onClick.AddListener(delegate { ShowRenameEditor(menutext, _tempNname.text, renamer.transform, thisTempleteInfo, name); });
-
 
         //리스트 삭제
+
         Button Bt_deleteTemp = GameObject.Find("Bt_Delete").GetComponent<Button>();
         Bt_deleteTemp.onClick.AddListener(() => deleteConfirm(name, SelectedTempletePage[2], selectedObject));
+
+
 
         ////퍼블리쉬
         //Button Bt_Publish = GameObject.Find("Bt_Publish").GetComponent<Button>();// 명령이 쌓이는 문제가 있어서 버튼으로 직접연결
@@ -139,19 +158,30 @@ public class MyARList : MonoBehaviour
 
         //백버튼 TempleteIcon
         Button Bt_Back = GameObject.Find("Back").GetComponent<Button>();
-        Bt_Back.onClick.AddListener(() => SelectedTempletePage[1].SetActive(false));
+        Bt_Back.onClick.AddListener(() =>backMyList(SelectedTempletePage[1]));
         Button Bt_TempleteIcon = GameObject.Find("TempleteIcon").GetComponent<Button>();
         Bt_TempleteIcon.onClick.AddListener(() => fromToPage(SelectedTempletePage[1], SelectedTempletePage[0]));
 
+        tempName = name;
     }
 
     //템플릿 정보창_템플릿 삭제
-
+    bool valuedChanged(string name)
+    {
+        return tempName != name ? true : false;
+    }
     void deleteConfirm(string name, GameObject page, GameObject selectedObject)
     {
+        
         fromToPage(SelectedTempletePage[1], SelectedTempletePage[2]);
-        Button yes = GameObject.Find("Button_Yes").GetComponent<Button>();
-        yes.onClick.AddListener(() => deleteTempFromList(name, page, selectedObject));
+
+        if (GameObject.Find("Button_Yes")) Destroy(GameObject.Find("Button_Yes"));
+        Transform RootButton = GameObject.Find("ConfirmWindow_DeleteTemp").transform;
+        Button NewDeleteButton = Instantiate(Bt_Yes, RootButton).GetComponent<Button>();
+        NewDeleteButton.name = "Button_Yes";
+        NewDeleteButton.onClick.AddListener(() => deleteTempFromList(name, page, selectedObject));
+
+
         Button no = GameObject.Find("Button_No").GetComponent<Button>();
         no.onClick.AddListener(() => fromToPage(SelectedTempletePage[2], SelectedTempletePage[1]));
     }
@@ -175,6 +205,8 @@ public class MyARList : MonoBehaviour
 
 
         SaveLoadTemplete.SaveTemplete(newTemp, page);
+        ButtonAction_CreateTemp bt = this.GetComponent<ButtonAction_CreateTemp>();
+        bt.OpenMyARwindow();
     }
     //템플릿 정보창-프리뷰 만들기
     Sprite PreviewTextrueLoad(string name)
@@ -208,6 +240,7 @@ public class MyARList : MonoBehaviour
     void LockInput(Text menutext, string _tempNname, InputField input, CurrentTemplete thisTempleteInfo, string Tname)
     {
         bool isSameName = false;
+        Transform renamer = GameObject.Find("Bt_Renamer").transform;
         if (input.text.Length > 0)
         {
             foreach (var item in DicMyTemp)
@@ -254,12 +287,8 @@ public class MyARList : MonoBehaviour
         }
         SaveLoadTemplete.SaveTemplete(reNameTemplete, SelectedTempletePage[1]);
 
-        //foreach (var item in DicMyTemp)
-        //{
-        //    newTemp.myTemplete.Add(item.Value);
-        //}
-        //Destroy(selectedObject);
-        //SaveLoadTemplete.SaveTemplete(newTemp, page);
+        ButtonAction_CreateTemp bt = this.GetComponent<ButtonAction_CreateTemp>();
+        bt.OpenMyARwindow();
     }
     #endregion
 
@@ -391,5 +420,12 @@ public class MyARList : MonoBehaviour
                 _new = new CurrentTemplete();
         }
         return _new;
+    }
+
+    void backMyList(GameObject page)
+    {
+        page.SetActive(false);
+        ButtonAction_CreateTemp bt = this.GetComponent<ButtonAction_CreateTemp>();
+        bt.OpenMyARwindow();
     }
 }
