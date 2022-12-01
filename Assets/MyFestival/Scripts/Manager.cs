@@ -19,6 +19,8 @@ public class Manager : MonoBehaviour
 
     [Header("현재 선택한 탬플릿 이름")]
     public string TempName;
+    [Header("현재 선택한 탬플릿 ")]
+    public CurrentTemplete SelectTemp;
     [Header("현재 선택된 오브젝트 유아이")]
     public GameObject DeleteUI;
 

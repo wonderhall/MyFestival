@@ -30,6 +30,12 @@ public class MyARList : MonoBehaviour
     [Header("button renamer")]
     public Button Bt_renamer;
 
+    [Tooltip("퍼블리쉬페이지 생성")]
+    [Header("button publish")]
+    public Button Bt_publish;
+    [Header("publish page")]
+    public GameObject publishPage;
+
     private Dictionary<string, CurrentTemplete> DicMyTemp;
 
     private Text _tempNname;
@@ -94,7 +100,7 @@ public class MyARList : MonoBehaviour
         SelectedTempletePage[0].SetActive(false);//해당페이지 오픈
         SelectedTempletePage[1].SetActive(true);//해당페이지 오픈
         //yield return new WaitForSeconds(0.1f);
-        yield return new WaitUntil(()=>valuedChanged(name));
+        yield return new WaitUntil(() => valuedChanged(name));
         Debug.Log(name);
         GameObject selectedObject = EventSystem.current.currentSelectedGameObject;
 
@@ -107,8 +113,7 @@ public class MyARList : MonoBehaviour
         double latitude = thisTempleteInfo.latitude;
         double longitude = thisTempleteInfo.longitude;
 
-        ct = thisTempleteInfo.items.ToArray();
-
+        Manager.instance.SelectTemp = thisTempleteInfo;
 
         //이름 바꾸기
         #region before 리바인딩 오류
@@ -154,11 +159,15 @@ public class MyARList : MonoBehaviour
         ////퍼블리쉬
         //Button Bt_Publish = GameObject.Find("Bt_Publish").GetComponent<Button>();// 명령이 쌓이는 문제가 있어서 버튼으로 직접연결
         ////Bt_Publish.onClick.AddListener(() => Publish(thisTempleteInfo));
-
+        ///
+        if (GameObject.Find("Bt_Publish")) Destroy(GameObject.Find("Bt_Publish"));
+        Button bt_pub = Instantiate(Bt_publish, RootButton).GetComponent<Button>();
+        bt_pub.name = "Bt_Publish";
+        bt_pub.onClick.AddListener(() => Publish());
 
         //백버튼 TempleteIcon
         Button Bt_Back = GameObject.Find("Back").GetComponent<Button>();
-        Bt_Back.onClick.AddListener(() =>backMyList(SelectedTempletePage[1]));
+        Bt_Back.onClick.AddListener(() => backMyList(SelectedTempletePage[1]));
         Button Bt_TempleteIcon = GameObject.Find("TempleteIcon").GetComponent<Button>();
         Bt_TempleteIcon.onClick.AddListener(() => fromToPage(SelectedTempletePage[1], SelectedTempletePage[0]));
 
@@ -172,7 +181,7 @@ public class MyARList : MonoBehaviour
     }
     void deleteConfirm(string name, GameObject page, GameObject selectedObject)
     {
-        
+
         fromToPage(SelectedTempletePage[1], SelectedTempletePage[2]);
 
         if (GameObject.Find("Button_Yes")) Destroy(GameObject.Find("Button_Yes"));
@@ -211,7 +220,6 @@ public class MyARList : MonoBehaviour
     //템플릿 정보창-프리뷰 만들기
     Sprite PreviewTextrueLoad(string name)
     {
-
         string path = SaveLoadTemplete.SavePath + name + ".png";
         Texture2D tex = null;    //빈 택스쳐 생성후 바이트로 로드하고 넣어준다.
         byte[] filedata;
@@ -294,33 +302,50 @@ public class MyARList : MonoBehaviour
 
     public void Publish(/*CurrentTemplete curtemp*/)
     {
-        Text currentTempName = GameObject.Find("Text_TempName").GetComponent<Text>();
+        #region old
+        //Text currentTempName = GameObject.Find("Text_TempName").GetComponent<Text>();
 
-        CurrentTemplete curTemp = new CurrentTemplete();
-        DicMyTemp.TryGetValue(currentTempName.text, out curTemp);
+        //CurrentTemplete curTemp = new CurrentTemplete();
+        //DicMyTemp.TryGetValue(currentTempName.text, out curTemp);
 
-        string saveFileName = "PublishTemplete";
-        string saveFilePath = SaveLoadTemplete.SavePath + saveFileName + ".json";
-        //
+        //string saveFileName = "PublishTemplete";
+        //string saveFilePath = SaveLoadTemplete.SavePath + saveFileName + ".json";
+        ////
 
-        Dictionary<string, CurrentTemplete> dic = SaveLoadTemplete.DicByJson(saveFilePath);//제이슨을 읽어서 딕셔너리화
+        //Dictionary<string, CurrentTemplete> dic = SaveLoadTemplete.DicByJson(saveFilePath);//제이슨을 읽어서 딕셔너리화
 
-        CurrentTemplete ct;
-        ct = CompairName(curTemp, dic);//이름이 겹치지 않는지 체크
-        if (ct.tempeteName != null)
-        {
-            SelectedTempletePage[1].SetActive(false);
-            SelectedTempletePage[3].SetActive(true);
-            Button yes = GameObject.Find("Button_Yes").GetComponent<Button>();
-            yes.onClick.AddListener(() => SaveLoadTemplete.SaveTempleteToShop(curTemp, SelectedTempletePage[3], saveFilePath));
-            Button no = GameObject.Find("Button_No").GetComponent<Button>();
-            no.onClick.AddListener(() => fromToPage(SelectedTempletePage[3], SelectedTempletePage[1]));
-        }
-        else
-        {
-            Debug.Log("samename!!");
-            StartCoroutine(showingWarningSamename());
-        }
+        //CurrentTemplete ct;
+        //ct = CompairName(curTemp, dic);//이름이 겹치지 않는지 체크
+        //if (ct.tempeteName != null)
+        //{
+        //    SelectedTempletePage[1].SetActive(false);
+        //    SelectedTempletePage[3].SetActive(true);
+        //    Button yes = GameObject.Find("Button_Yes").GetComponent<Button>();
+        //    yes.onClick.AddListener(() => SaveLoadTemplete.SaveTempleteToShop(curTemp, SelectedTempletePage[3], saveFilePath));
+        //    Button no = GameObject.Find("Button_No").GetComponent<Button>();
+        //    no.onClick.AddListener(() => fromToPage(SelectedTempletePage[3], SelectedTempletePage[1]));
+        //}
+        //else
+        //{
+        //    Debug.Log("samename!!");
+        //    StartCoroutine(showingWarningSamename());
+        //} 
+        #endregion
+        SelectedTempletePage[1].SetActive(false);//템플릿 속성창
+        SelectedTempletePage[3].SetActive(true);//퍼블리쉬 빈 루트창
+        CurrentTemplete curtemp = Manager.instance.SelectTemp;
+        //생성
+        if (GameObject.Find("PublishPage")) Destroy(GameObject.Find("PublishPage"));
+        GameObject pubPage = Instantiate(publishPage, SelectedTempletePage[3].transform);
+        pubPage.name = "PublishPage";
+
+        //속성넣어주기
+        pubPage.GetComponent<Publish>().gotLatitude = curtemp.latitude;
+        pubPage.GetComponent<Publish>().gotlongitude = curtemp.longitude;
+        pubPage.GetComponent<Publish>().cur_name.text = curtemp.tempeteName;
+        pubPage.GetComponent<Publish>().cTemp = curtemp;
+        pubPage.GetComponent<Publish>().cur_GPS.text = curtemp.latitude.ToString() + "," + curtemp.longitude.ToString();
+
     }
     void fromToPage(GameObject from, GameObject to)
     {
@@ -344,7 +369,9 @@ public class MyARList : MonoBehaviour
         ScriptableObject_CategoryItems[] SO = this.GetComponent<ButtonAction_SelectCategory>().SO_List;
 
         GameObject newObject = null;
-        foreach (var item in ct)
+
+        List<CurItemList> curItemList = Manager.instance.SelectTemp.items;
+        foreach (var item in curItemList)
         {
 
             float[] nPo = new float[3];
@@ -405,14 +432,14 @@ public class MyARList : MonoBehaviour
         }
     }
 
-    IEnumerator showingWarningSamename()
+    public IEnumerator showingWarningSamename()
     {
         SelectedTempletePage[4].SetActive(true);
         yield return new WaitForSeconds(0.5f);
         SelectedTempletePage[4].SetActive(false);
     }//이름 겹칠때 경고
 
-    CurrentTemplete CompairName(CurrentTemplete _new, Dictionary<string, CurrentTemplete> _old)
+    public CurrentTemplete CompairName(CurrentTemplete _new, Dictionary<string, CurrentTemplete> _old)
     {
         foreach (var item in _old)
         {

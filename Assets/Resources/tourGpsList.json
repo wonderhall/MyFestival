@@ -1,0 +1,41 @@
+{
+  "tourlist": [
+    {
+      "idx": 0,
+      "Name": "현재 위치로 설정",
+      "latitude": 33.0000,
+      "longitude": 126.00000
+    },
+    {
+      "idx": 1,
+      "Name": "함덕해수욕장",
+      "latitude": 33.543380,
+      "longitude": 126.669787
+    },
+    {
+      "idx": 2,
+      "Name": "1100고지",
+      "latitude": 33.357596,
+      "longitude": 126.462895
+    },
+    {
+      "idx": 3,
+      "Name": "용두암",
+      "latitude": 33.516231,
+      "longitude": 126.512060
+    },
+    {
+      "idx": 4,
+      "Name": "한라수목원",
+      "latitude": 33.469516,
+      "longitude": 126.492906
+    },
+    {
+      "idx": 5,
+      "Name": "새연교",
+      "latitude": 33.238903,
+      "longitude": 126.558745
+    }
+
+  ]
+}
