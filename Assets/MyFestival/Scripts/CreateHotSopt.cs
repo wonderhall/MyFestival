@@ -110,6 +110,9 @@ public class CreateHotSopt : MonoBehaviour
                     newObject.transform.localPosition = nPosition;
                     newObject.transform.localEulerAngles = nRotation;
                     newObject.transform.localScale = nScale;
+
+                    if (newObject.tag == "Text")
+                        newObject.GetComponent<Banner>().text.text = item.TextName;
                 }
             }//so리트스와 아이템 이름 비교해서 생성해준다.
         }//if닫기

@@ -62,9 +62,11 @@ public class MoveController : MonoBehaviour
     public float dstTravelled;
     public float speed = 5;
 
+    public bool haveMoveCont;
 
     private void OnEnable()
     {
+    
         if (this.transform.GetChild(0).GetComponent<ParticleSystem>())//자식 1번 검색해서 파티클이면 파티클에 넣어
             ps = this.transform.GetChild(0).GetComponent<ParticleSystem>();
         else
@@ -75,6 +77,10 @@ public class MoveController : MonoBehaviour
     }
     private void Update()
     {
+        if (GameObject.FindObjectOfType<MoveController>())
+        {
+
+        }
         if (Moving)
         {
             if (target != null)
