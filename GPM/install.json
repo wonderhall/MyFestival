@@ -1,0 +1,56 @@
+{
+    "installs": [
+        {
+            "name": "Common",
+            "version": "2.2.2",
+            "dependency": []
+        },
+        {
+            "name": "Communicator",
+            "version": "1.1.0",
+            "dependency": [
+                "Common"
+            ]
+        },
+        {
+            "name": "WebView",
+            "version": "1.9.2",
+            "dependency": [
+                "Common",
+                "Communicator"
+            ]
+        },
+        {
+            "name": "CacheStorage",
+            "version": "1.0.1",
+            "dependency": [
+                "Common",
+                "UI"
+            ]
+        },
+        {
+            "name": "UI",
+            "version": "2.6.0",
+            "dependency": [
+                "Common",
+                "CacheStorage"
+            ]
+        },
+        {
+            "name": "LogViewer",
+            "version": "2.0.3",
+            "dependency": [
+                "Common",
+                "UI",
+                "CacheStorage"
+            ]
+        },
+        {
+            "name": "AssetManagement",
+            "version": "1.2.2",
+            "dependency": [
+                "Common"
+            ]
+        }
+    ]
+}

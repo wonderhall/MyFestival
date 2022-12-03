@@ -5,10 +5,11 @@ using Newtonsoft.Json;
 using System.IO;
 using System;
 using System.Text;
+using Proyecto26;
+using EasyUI.Toast;
 
 public static class SaveLoadTemplete
 {
-
     public static string SavePath => Application.persistentDataPath + "/JsonData/"; //저장폴더 위치
 
 
@@ -204,7 +205,7 @@ public static class SaveLoadTemplete
         return allTemplete;
     }
 
-    public static MyTemplete MyTempByJson(string Filepath)
+    public static string MyTempJson(string Filepath)
     {
         if (!Directory.Exists(SaveLoadTemplete.SavePath) || !File.Exists(Filepath))
             newEmptyData(Filepath);//파일이 없을경우 대체 생성
@@ -216,9 +217,16 @@ public static class SaveLoadTemplete
         streamOpen.Close();
         //<--딕셔너리로 파일 변환-->
         string fromJson = Encoding.UTF8.GetString(data);
+        return fromJson;
+    }
+    public static MyTemplete MyTempByJson(string Filepath)
+    {
+        var fromJson = MyTempJson(Filepath);
         MyTemplete DeserialJson = JsonConvert.DeserializeObject<MyTemplete>(fromJson);//제이슨으로부터 템플릿모음 클래스생성
         return DeserialJson;
     }
+
+
     public static void TempleteWriteToJson(MyTemplete Templete, string path)
     {
         string toJson = JsonConvert.SerializeObject(Templete);

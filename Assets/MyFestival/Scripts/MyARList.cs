@@ -8,9 +8,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 using UnityEngine.Events;
-
+using Proyecto26;
+using EasyUI.Toast;
 public class MyARList : MonoBehaviour
 {
+    private readonly string basePath = "https://flyingart-server.8hlab.com";
     //패스
     string saveFileName;
     private string saveFilePath;
@@ -63,6 +65,28 @@ public class MyARList : MonoBehaviour
             Destroy(handle);
         }
         if (!Directory.Exists(SaveLoadTemplete.SavePath)) SaveLoadTemplete.newEmptyData(saveFileName);
+
+        var json = SaveLoadTemplete.MyTempJson(saveFilePath);
+
+        var token = "Bearer " + PlayerPrefs.GetString("token");
+        var currentRequest = new RequestHelper
+        {
+            Uri = basePath + "/events",
+            Headers = new Dictionary<string, string> {
+                { "Authorization", token }
+            }
+        };
+
+        RestClient.GetArray<ResEvent>(currentRequest)
+        .Then(events => {
+            Debug.Log("### events: " + events);
+            Toast.Show("환영합니다.");
+        })
+        .Catch(err => {
+            var error = err as RequestException;
+            var exception = JsonUtility.FromJson<ServerException>(error.Response);
+            Toast.Show(exception.error);
+        });
 
         MyTemplete DeserialJson = SaveLoadTemplete.MyTempByJson(saveFilePath);
         DicMyTemp = new Dictionary<string, CurrentTemplete>();

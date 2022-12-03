@@ -50,26 +50,30 @@ public class ButtonAction : MonoBehaviour
     {
         bt_showMenu.onClick.AddListener(() => MenuOpen());
         bt_hideMenu.onClick.AddListener(() => MenuClose());
-        bt_ScreenShot.onClick.AddListener(()=> StartCoroutine(TakeAndSaveScreenshot()));
+        bt_ScreenShot.onClick.AddListener(() => StartCoroutine(TakeAndSaveScreenshot()));
         bt_Reset.onClick.AddListener(Manager.instance.ArReset);
         //bt_createNewAR.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[1])));
         bt_createNewAR.onClick.AddListener(() => StartCoroutine(LoadSceneSelectTemp()));
-        bt_ARTempleteList.onClick.AddListener(()=> StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[2])));
+        bt_ARTempleteList.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[2])));
         //bt_myARList.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[3])));
         bt_myARList.onClick.AddListener(() => StartCoroutine(LoadSceneMyList()));
         bt_noticeBoard.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[4])));
         bt_logOut.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[5])));
         bt_closeTheApp.onClick.AddListener(() => StartCoroutine(OpenAfterCloseMenu(changeWindowList[0], changeWindowList[6])));
 
-        bt_LogOutSub.onClick.AddListener(() => Manager.instance.SceneLoad("LoginScene"));
+        bt_LogOutSub.onClick.AddListener(OnClickLogOut);
         bt_closetheAppSub.onClick.AddListener(()=>Application.Quit());
         bt_CreateNewTemplete.onClick.AddListener(()=>Manager.instance.SceneLoad("CreateNewTemp"));
+    }
 
-
+    public void OnClickLogOut()
+    {
+        PlayerPrefs.DeleteKey("token");
+        Manager.instance.SceneLoad("LoginScene");
     }
 
     //버튼전용액션--->
-   public void MenuOpen()
+    public void MenuOpen()
     {
         _animator = bt_showMenu.transform.parent.GetComponent<Animator>();
         bt_showMenu.gameObject.SetActive(false);
