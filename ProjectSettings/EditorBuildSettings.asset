@@ -23,9 +23,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/MyFestival/Scenes/WebViewScene.unity
     guid: d84e199d892e0434882edaf93c9e6aed
-  - enabled: 1
-    path: Assets/MyFestival/Scenes/MapScene.unity
-    guid: 9467489ca54ab544797dd52d900d6263
   - enabled: 0
     path: 
     guid: 00000000000000000000000000000000

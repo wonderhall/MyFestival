@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using UnityEngine;
 using UnityEngine.UI;
 using System;
-
+using Gpm.WebView;
 
 [Serializable]
 
@@ -81,16 +82,120 @@ public class Publish : MonoBehaviour
             ChoiceLatitude = gotLatitude;
             ChoiceLongitude = gotlongitude;
         }
+        else if (change.value == 1)
+        {
+            ChoiceLatitude = gotLatitude;
+            ChoiceLongitude = gotlongitude;
+            ShowUrlFullScreen();
+        }
         else
         {
             ChoiceLatitude = tg.latitude;
             ChoiceLongitude = tg.longitude;
         }
 
+        showLocationInfo();
+    }
+
+    private void showLocationInfo()
+    {
         string changeGps = ChoiceLatitude + "," + ChoiceLongitude;
         cur_GPS.text = changeGps;
     }
 
+    public void ShowUrlFullScreen()
+    {
+        GpmWebView.ShowUrl(
+            "https://daxib.8hlab.com/map.html?lat=" + gotLatitude + "&lng=" + gotlongitude,
+            new GpmWebViewRequest.Configuration()
+            {
+                style = GpmWebViewStyle.FULLSCREEN,
+                orientation = GpmOrientation.LANDSCAPE,
+                isClearCookie = true,
+                isClearCache = true,
+                isNavigationBarVisible = true,
+                navigationBarColor = "#00002D",
+                title = "실행 위치를 선택하세요..",
+                isBackButtonVisible = false,
+                isForwardButtonVisible = false,
+                supportMultipleWindows = true,
+#if UNITY_IOS
+            contentMode = GpmWebViewContentMode.MOBILE
+#endif
+            },
+            OnCallback,
+            new List<string>()
+            {
+                "daxib",
+                "https://location/"
+            });
+    }
+    private void OnCallback(
+    GpmWebViewCallback.CallbackType callbackType,
+    string data,
+    GpmWebViewError error)
+    {
+        Debug.Log("OnCallback: " + callbackType);
+        switch (callbackType)
+        {
+            case GpmWebViewCallback.CallbackType.Open:
+                if (error != null)
+                {
+                    Debug.LogFormat("Fail to open WebView. Error:{0}", error);
+                }
+                break;
+            case GpmWebViewCallback.CallbackType.Close:
+                if (error != null)
+                {
+                    Debug.LogFormat("Fail to close WebView. Error:{0}", error);
+                }
+                break;
+            case GpmWebViewCallback.CallbackType.PageLoad:
+                if (string.IsNullOrEmpty(data) == false)
+                {
+                    Debug.LogFormat("Loaded Page:{0}", data);
+                }
+                break;
+            case GpmWebViewCallback.CallbackType.MultiWindowOpen:
+                Debug.Log("MultiWindowOpen");
+                break;
+            case GpmWebViewCallback.CallbackType.MultiWindowClose:
+                Debug.Log("MultiWindowClose");
+                break;
+            case GpmWebViewCallback.CallbackType.Scheme:
+                if (error == null)
+                {
+                    if (data.StartsWith("https://location/") == true)
+                    {
+                        var query = new Uri(data).Query;
+                        Debug.Log("query: " + query);
+
+                        NameValueCollection nameValueCollection = new NameValueCollection();
+                        StringUtil.ParseQueryString(query, System.Text.Encoding.Unicode, nameValueCollection);
+
+                        var lat = nameValueCollection["lat"];
+                        var lng = nameValueCollection["lng"];
+
+                        ChoiceLatitude = Double.Parse(lat);
+                        ChoiceLongitude = Double.Parse(lng);
+
+                        showLocationInfo();
+                        GpmWebView.Close();
+                    }
+                }
+                else
+                {
+                    Debug.Log(string.Format("Fail to custom scheme. Error:{0}", error));
+                }
+                break;
+            case GpmWebViewCallback.CallbackType.GoBack:
+                Debug.Log("GoBack");
+                break;
+            case GpmWebViewCallback.CallbackType.GoForward:
+                Debug.Log("GoForward");
+                break;
+        }
+    }
 
     public void TryPublish()//퍼블리쉬
     {
