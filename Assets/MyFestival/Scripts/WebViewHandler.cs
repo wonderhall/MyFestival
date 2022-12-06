@@ -10,7 +10,6 @@ public class WebViewHandler : MonoBehaviour
 {
     public Button webViewButton;
 
-    private Queue<Action> m_queueAction = new Queue<Action>();
     public void ShowUrlFullScreen()
     {
         GpmWebView.ShowUrl(
@@ -95,24 +94,8 @@ public class WebViewHandler : MonoBehaviour
         }
     }
 
-    public void GoCall()
-    {
-        //메인 쓰레드 아닌 에러를 위한 쓰레드
-        Thread thread = new Thread(() =>
-        {
-            //큐에 액션을 넣는다.
-            m_queueAction.Enqueue(() =>
-            {
-                Toast.Show("WebView Loaded");
-                ShowUrlFullScreen();
-            });
-        });
-        thread.Start();
-    }
-
     public void OnClickWebView()
     {
-        Toast.Show("WebView Loaded");
         ShowUrlFullScreen();
     }
 
@@ -120,16 +103,10 @@ public class WebViewHandler : MonoBehaviour
     void Start()
     {
         webViewButton.onClick.AddListener(OnClickWebView);
-
-        GoCall();
     }
 
     // Update is called once per frame
     void Update()
     {
-        while (m_queueAction.Count > 0)
-        {
-            m_queueAction.Dequeue().Invoke();
-        }
     }
 }
