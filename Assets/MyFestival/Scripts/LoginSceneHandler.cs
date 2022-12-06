@@ -22,12 +22,6 @@ public class LoginSceneHandler : MonoBehaviour
     {
         loginButton.onClick.AddListener(OnClickLogin);
         signupButton.onClick.AddListener(OnClickSignup);
-
-        var token = PlayerPrefs.GetString("token");
-        if (token.Length > 0)
-        {
-            SceneManager.LoadScene("Main");
-        }
     }
 
     // Update is called once per frame
