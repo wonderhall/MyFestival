@@ -1,13 +1,9 @@
-using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using UnityEngine.Events;
 using Proyecto26;
 using EasyUI.Toast;
 public class MyARList : MonoBehaviour
